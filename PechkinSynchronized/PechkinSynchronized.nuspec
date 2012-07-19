@@ -14,7 +14,7 @@
     <copyright>Copyright 2012</copyright>
     <tags>Html PDF Wrapper Converter Webkit Synchronous Blocking</tags>
     <dependencies>
-        <dependency id="Pechkin" version="0.5.0.0" />
+        <dependency id="Pechkin" version="0.5.4.0" />
     </dependencies>
   </metadata>
 </package>
