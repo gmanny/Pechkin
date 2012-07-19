@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>Pechkin.Synchronized</title>
+    <authors>Gman</authors>
+    <owners>Gman</owners>
+    <projectUrl>https://github.com/gmanny/Pechkin</projectUrl>
+    <!-->iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Thread safe implementation that lets you use Pechkin from different threads.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2012</copyright>
+    <tags>Html PDF Wrapper Converter Webkit Synchronous Blocking</tags>
+    <dependencies>
+        <dependency id="Pechkin" version="0.5.0.0" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,10 @@
+init module
+
+create global settings,
+create converter from global settings (that operates on those settings)
+set up converter with callbacks
+create object settings
+add object to converter
+
+then we should destroy converter
+the we should deinit the module
