@@ -4,6 +4,7 @@ obj
 _ReSharper.*
 .svn
 *.user
+*.suo
 
 # mstest test results
 TestResults
