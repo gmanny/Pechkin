@@ -164,6 +164,10 @@ namespace Pechkin
         {
             PechkinBindings.wkhtmltopdf_add_object(converter, objectConfig, html);
         }
+        public static void AddObject(IntPtr converter, IntPtr objectConfig, byte[] html)
+        {
+            PechkinBindings.wkhtmltopdf_add_object(converter, objectConfig, html);
+        }
 
         public static int GetPhaseNumber(IntPtr converter)
         {

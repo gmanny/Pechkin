@@ -16,6 +16,18 @@ namespace Pechkin
         byte[] Convert(ObjectConfig doc, string html);
 
         /// <summary>
+        /// Runs conversion process.
+        /// 
+        /// Allows to convert both external HTML resource and HTML string.
+        /// 
+        /// Takes html source as a byte array for when you don't know the encoding.
+        /// </summary>
+        /// <param name="doc">document parameters</param>
+        /// <param name="html">document body, ignored if <code>ObjectConfig.SetPageUri</code> is set</param>
+        /// <returns>PDF document body</returns>
+        byte[] Convert(ObjectConfig doc, byte[] html);
+
+        /// <summary>
         /// Converts external HTML resource into PDF.
         /// </summary>
         /// <param name="doc">document parameters, <code>ObjectConfig.SetPageUri</code> should be set</param>
@@ -28,6 +40,15 @@ namespace Pechkin
         /// <param name="html">HTML string</param>
         /// <returns>PDF document body</returns>
         byte[] Convert(string html);
+
+        /// <summary>
+        /// Converts HTML string to PDF with default settings.
+        /// 
+        /// Takes html source as a byte array for when you don't know the encoding.
+        /// </summary>
+        /// <param name="html">HTML string</param>
+        /// <returns>PDF document body</returns>
+        byte[] Convert(byte[] html);
 
         /// <summary>
         /// Converts HTML page at specified URL to PDF with default settings.

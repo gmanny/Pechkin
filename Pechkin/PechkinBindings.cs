@@ -74,6 +74,9 @@ namespace Pechkin
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Utf8Marshaler))]String data);
 
         [DllImport("wkhtmltox0.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        public static extern void wkhtmltopdf_add_object(IntPtr converter, IntPtr objectSettings, byte[] data);
+
+        [DllImport("wkhtmltox0.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int wkhtmltopdf_current_phase(IntPtr converter);
 
         [DllImport("wkhtmltox0.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]

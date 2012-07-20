@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Common.Logging;
 using Pechkin.EventHandlers;
 
@@ -227,11 +228,13 @@ namespace Pechkin
         /// Runs conversion process.
         /// 
         /// Allows to convert both external HTML resource and HTML string.
+        /// 
+        /// Takes html source as a byte array for when you don't know the encoding.
         /// </summary>
         /// <param name="doc">document parameters</param>
         /// <param name="html">document body, ignored if <code>ObjectConfig.SetPageUri</code> is set</param>
         /// <returns>PDF document body</returns>
-        public byte[] Convert(ObjectConfig doc, string html)
+        public byte[] Convert(ObjectConfig doc, byte[] html)
         {
             if (_reinitConverter)
             {
@@ -273,13 +276,26 @@ namespace Pechkin
         }
 
         /// <summary>
+        /// Runs conversion process.
+        /// 
+        /// Allows to convert both external HTML resource and HTML string.
+        /// </summary>
+        /// <param name="doc">document parameters</param>
+        /// <param name="html">document body, ignored if <code>ObjectConfig.SetPageUri</code> is set</param>
+        /// <returns>PDF document body</returns>
+        public byte[] Convert(ObjectConfig doc, string html)
+        {
+            return Convert(doc, Encoding.UTF8.GetBytes(html));
+        }
+
+        /// <summary>
         /// Converts external HTML resource into PDF.
         /// </summary>
         /// <param name="doc">document parameters, <code>ObjectConfig.SetPageUri</code> should be set</param>
         /// <returns>PDF document body</returns>
         public byte[] Convert(ObjectConfig doc)
         {
-            return Convert(doc, null);
+            return Convert(doc, (byte[])null);
         }
         /// <summary>
         /// Converts HTML string to PDF with default settings.
@@ -291,13 +307,25 @@ namespace Pechkin
             return Convert(new ObjectConfig(), html);
         }
         /// <summary>
+        /// Converts HTML string to PDF with default settings.
+        /// 
+        /// Takes html source as a byte array for when you don't know the encoding.
+        /// </summary>
+        /// <param name="html">HTML string</param>
+        /// <returns>PDF document body</returns>
+        public byte[] Convert(byte[] html)
+        {
+            return Convert(new ObjectConfig(), html);
+        }
+
+        /// <summary>
         /// Converts HTML page at specified URL to PDF with default settings.
         /// </summary>
         /// <param name="url">url of page, can be either http/https or file link</param>
         /// <returns>PDF document body</returns>
         public byte[] Convert(Uri url)
         {
-            return Convert(new ObjectConfig().SetPageUri(url.AbsoluteUri), null);
+            return Convert(new ObjectConfig().SetPageUri(url.AbsoluteUri));
         }
 
         // some properties for convenience
