@@ -10,7 +10,7 @@
     <!-->iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.NET Wrapper for WkHtmlToPdf static DLL. Allows you to utilize full power of the library.</description>
-    <releaseNotes>Added ability to supply byte[] for html (useful, when you don't know the encoding and it can change).</releaseNotes>
+    <releaseNotes>Fixed bug in SimplePechkin that caused event handlers to be cleaned by GC right after they're installed. Removed unneded workaround.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Html PDF Wrapper Converter Webkit</tags>
   </metadata>

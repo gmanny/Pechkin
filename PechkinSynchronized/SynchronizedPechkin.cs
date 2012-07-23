@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Pechkin.EventHandlers;
 using Pechkin.Synchronized.Util;
 using ProgressChangedEventHandler = Pechkin.EventHandlers.ProgressChangedEventHandler;
@@ -15,8 +16,10 @@ namespace Pechkin.Synchronized
     /// </summary>
     public class SynchronizedPechkin : IPechkin
     {
+        //private readonly ILog _log = LogManager.GetCurrentClassLogger();
+
         private readonly IPechkin _converter;
-        private static DispatcherThread _synchronizer = new DispatcherThread();
+        private static ISynchronizeInvoke _synchronizer = new DispatcherThread();
 
         /// <summary>
         /// This method is used to stop service thread when executing tests. 
@@ -27,7 +30,8 @@ namespace Pechkin.Synchronized
         {
             if (_synchronizer != null)
             {
-                _synchronizer.Terminate();
+                DispatcherThread dispatcherThread = _synchronizer as DispatcherThread;
+                if (dispatcherThread != null) dispatcherThread.Terminate();
                 _synchronizer = null;
             }
         }

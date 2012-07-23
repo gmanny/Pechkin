@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using Common.Logging;
 using Pechkin.EventHandlers;
+using Pechkin.Util;
 
 namespace Pechkin
 {
@@ -12,7 +14,7 @@ namespace Pechkin
     /// Even two objects can't be used from different thread simultaneously. For that purpose you should use
     /// <code>SynchronizedPechkin</code> from <code>Pechkin.Synchronized</code> package.
     /// </summary>
-    public class SimplePechkin : IPechkin
+    public class SimplePechkin : IPechkin, IDisposable
     {
         private readonly ILog _log = LogManager.GetCurrentClassLogger();
 
@@ -32,7 +34,7 @@ namespace Pechkin
 
             if (_log.IsTraceEnabled)
             {
-                _log.Trace("Conversion started, " + expectedPhaseCount + " phases awaiting");
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Conversion started, " + expectedPhaseCount + " phases awaiting");
             }
 
             BeginEventHandler handler = Begin;
@@ -41,7 +43,7 @@ namespace Pechkin
                 if (handler != null) handler(this, expectedPhaseCount);
             } catch (Exception e)
             {
-                _log.Warn("Exception in Begin event handler", e);
+                _log.Warn("T:" + Thread.CurrentThread.Name + " Exception in Begin event handler", e);
             }
         }
 
@@ -52,11 +54,12 @@ namespace Pechkin
         /// </summary>
         public event WarningEventHandler Warning;
 
+        private readonly StringCallback _warningCallback;
         protected virtual void OnWarning(IntPtr converter, string warningText)
         {
             if (_log.IsTraceEnabled)
             {
-                _log.Warn("Conversion Warning: " + warningText);
+                _log.Warn("T:" + Thread.CurrentThread.Name + " Conversion Warning: " + warningText);
             }
 
             WarningEventHandler handler = Warning;
@@ -66,7 +69,7 @@ namespace Pechkin
             }
             catch (Exception e)
             {
-                _log.Warn("Exception in Warning event handler", e);
+                _log.Warn("T:" + Thread.CurrentThread.Name + " Exception in Warning event handler", e);
             }
         }
 
@@ -77,11 +80,12 @@ namespace Pechkin
         /// </summary>
         public event ErrorEventHandler Error;
 
+        private readonly StringCallback _errorCallback;
         protected virtual void OnError(IntPtr converter, string errorText)
         {
             if (_log.IsTraceEnabled)
             {
-                _log.Error("Conversion Error: " + errorText);
+                _log.Error("T:" + Thread.CurrentThread.Name + " Conversion Error: " + errorText);
             }
 
             ErrorEventHandler handler = Error;
@@ -91,7 +95,7 @@ namespace Pechkin
             }
             catch (Exception e)
             {
-                _log.Warn("Exception in Error event handler", e);
+                _log.Warn("T:" + Thread.CurrentThread.Name + " Exception in Error event handler", e);
             }
         }
 
@@ -100,6 +104,7 @@ namespace Pechkin
         /// </summary>
         public event PhaseChangedEventHandler PhaseChanged;
 
+        private readonly VoidCallback _phaseChangedCallback;
         protected virtual void OnPhaseChanged(IntPtr converter)
         {
             int phaseNumber = PechkinStatic.GetPhaseNumber(converter);
@@ -107,7 +112,7 @@ namespace Pechkin
 
             if (_log.IsTraceEnabled)
             {
-                _log.Trace("Conversion Phase Changed: #" + phaseNumber + " " + phaseDescription);
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Conversion Phase Changed: #" + phaseNumber + " " + phaseDescription);
             }
 
             PhaseChangedEventHandler handler = PhaseChanged;
@@ -117,7 +122,7 @@ namespace Pechkin
             }
             catch (Exception e)
             {
-                _log.Warn("Exception in PhaseChange event handler", e);
+                _log.Warn("T:" + Thread.CurrentThread.Name + " Exception in PhaseChange event handler", e);
             }
         }
 
@@ -128,13 +133,14 @@ namespace Pechkin
         /// </summary>
         public event ProgressChangedEventHandler ProgressChanged;
 
+        private readonly IntCallback _progressChangedCallback;
         protected virtual void OnProgressChanged(IntPtr converter, int progress)
         {
             string progressDescription = PechkinStatic.GetProgressDescription(converter);
 
             if (_log.IsTraceEnabled)
             {
-                _log.Trace("Conversion Progress Changed: (" + progress + ") " + progressDescription);
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Conversion Progress Changed: (" + progress + ") " + progressDescription);
             }
 
             ProgressChangedEventHandler handler = ProgressChanged;
@@ -144,7 +150,7 @@ namespace Pechkin
             }
             catch (Exception e)
             {
-                _log.Warn("Exception in Progress event handler", e);
+                _log.Warn("T:" + Thread.CurrentThread.Name + " Exception in Progress event handler", e);
             }
         }
 
@@ -153,11 +159,12 @@ namespace Pechkin
         /// </summary>
         public event FinishEventHandler Finished;
 
+        private readonly IntCallback _finishedCallback;
         protected virtual void OnFinished(IntPtr converter, int success)
         {
             if (_log.IsTraceEnabled)
             {
-                _log.Trace("Conversion Finished: " + (success != 0 ? "Succeede" : "Failed"));
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Conversion Finished: " + (success != 0 ? "Succeede" : "Failed"));
             }
 
             FinishEventHandler handler = Finished;
@@ -167,7 +174,7 @@ namespace Pechkin
             }
             catch (Exception e)
             {
-                _log.Warn("Exception in Finish event handler", e);
+                _log.Warn("T:" + Thread.CurrentThread.Name + " Exception in Finish event handler", e);
             }
         }
 
@@ -178,7 +185,7 @@ namespace Pechkin
                 PechkinStatic.DestroyConverter(_converter);
 
                 if (_log.IsTraceEnabled)
-                    _log.Trace("Destroyed previous converter");
+                    _log.Trace("T:" + Thread.CurrentThread.Name + " Destroyed previous converter");
             }
 
             // the damn lib... we can't reuse anything
@@ -186,16 +193,16 @@ namespace Pechkin
             _converter = PechkinStatic.CreateConverter(_globalConfigUnmanaged);
 
             if (_log.IsTraceEnabled)
-                _log.Trace("Created converter");
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Created converter");
 
-            PechkinStatic.SetErrorCallback(_converter, OnError);
-            PechkinStatic.SetWarningCallback(_converter, OnWarning);
-            PechkinStatic.SetPhaseChangeCallback(_converter, OnPhaseChanged);
-            PechkinStatic.SetProgressChangeCallback(_converter, OnProgressChanged);
-            PechkinStatic.SetFinishedCallback(_converter, OnFinished);
+            PechkinStatic.SetErrorCallback(_converter, _errorCallback);
+            PechkinStatic.SetWarningCallback(_converter, _warningCallback);
+            PechkinStatic.SetPhaseChangeCallback(_converter, _phaseChangedCallback);
+            PechkinStatic.SetProgressChangeCallback(_converter, _progressChangedCallback);
+            PechkinStatic.SetFinishedCallback(_converter, _finishedCallback);
 
             if (_log.IsTraceEnabled)
-                _log.Trace("Added callbacks to converter");
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Added callbacks to converter");
 
             _reinitConverter = false;
         }
@@ -206,20 +213,33 @@ namespace Pechkin
         /// <param name="config">global configuration object</param>
         public SimplePechkin(GlobalConfig config)
         {
+            if (_log.IsTraceEnabled)
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Creating SimplePechkin");
+
+            // create and STORE delegates to protect them from GC
+            _errorCallback = OnError;
+            _finishedCallback = OnFinished;
+            _phaseChangedCallback = OnPhaseChanged;
+            _progressChangedCallback = OnProgressChanged;
+            _warningCallback = OnWarning;
+            
             PechkinStatic.InitLib(false);
 
             _globalConfig = config;
             
             if (_log.IsTraceEnabled)
-                _log.Trace("Created global config");
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Created global config");
 
             CreateConverter();
         }
 
-        ~SimplePechkin()
+        public void Dispose()
         {
             if (!_converter.Equals(IntPtr.Zero))
             {
+                if (_log.IsTraceEnabled)
+                    _log.Trace("T:" + Thread.CurrentThread.Name + " Releasing unmanaged converter");
+
                 PechkinStatic.DestroyConverter(_converter);
             }
         }
@@ -245,13 +265,16 @@ namespace Pechkin
             IntPtr objConf = doc.CreateObjectConfig();
 
             if (_log.IsTraceEnabled)
-                _log.Trace("Created object config");
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Created object config");
 
             // add object to converter
             PechkinStatic.AddObject(_converter, objConf, html);
 
             if (_log.IsTraceEnabled)
-                _log.Trace("Added object to converter");
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Added object to converter");
+
+            // run OnBegin
+            OnBegin(_converter);
 
             try
             {
@@ -259,7 +282,7 @@ namespace Pechkin
                 if (!PechkinStatic.PerformConversion(_converter))
                 {
                     if (_log.IsTraceEnabled)
-                        _log.Trace("Conversion failed, null returned");
+                        _log.Trace("T:" + Thread.CurrentThread.Name + " Conversion failed, null returned");
 
                     return null;
                 }

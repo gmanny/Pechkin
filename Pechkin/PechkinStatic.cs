@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
+using Common.Logging;
 using Html2Pdf.EventHandlers;
 using Pechkin.Util;
 
@@ -13,6 +15,8 @@ namespace Pechkin
     /// </summary>
     public static class PechkinStatic
     {
+        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+
         private static bool _inited;
         private static bool _useHack;
 // ReSharper disable NotAccessedField.Local
@@ -27,6 +31,11 @@ namespace Pechkin
         {
             if (_inited) return;
             _inited = true;
+
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Initializing library (wkhtmltopdf_init)");
+            }
 
             PechkinBindings.wkhtmltopdf_init(useGraphics ? 1 : 0);
 
@@ -52,6 +61,11 @@ namespace Pechkin
             if (LibDeInit != null)
             {
                 LibDeInit();
+            }
+
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Deinitializing library (wkhtmltopdf_deinit)");
             }
 
             PechkinBindings.wkhtmltopdf_deinit();
@@ -80,18 +94,38 @@ namespace Pechkin
 
         public static IntPtr CreateGlobalSetting()
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Creating global settings (wkhtmltopdf_create_global_settings)");
+            }
+
             return PechkinBindings.wkhtmltopdf_create_global_settings();
         }
         public static IntPtr CreateObjectSettings()
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Creating object settings (wkhtmltopdf_create_object_settings)");
+            }
+
             return PechkinBindings.wkhtmltopdf_create_object_settings();
         }
         public static int SetGlobalSetting(IntPtr setting, string name, string value)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting global setting (wkhtmltopdf_set_global_setting)");
+            }
+
             return PechkinBindings.wkhtmltopdf_set_global_setting(setting, name, value);
         }
         public static string GetGlobalSetting(IntPtr setting, string name)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Getting global setting (wkhtmltopdf_get_global_setting)");
+            }
+
             byte[] buf = new byte[2048];
             PechkinBindings.wkhtmltopdf_get_global_setting(setting, name, ref buf, buf.Length);
 
@@ -108,10 +142,20 @@ namespace Pechkin
         }
         public static int SetObjectSetting(IntPtr setting, string name, string value)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting object setting (wkhtmltopdf_set_object_setting)");
+            }
+
             return PechkinBindings.wkhtmltopdf_set_object_setting(setting, name, value);
         }
         public static string GetObjectSetting(IntPtr setting, string name)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Getting object setting (wkhtmltopdf_get_object_setting)");
+            }
+
             byte[] buf = new byte[2048];
             PechkinBindings.wkhtmltopdf_get_object_setting(setting, name, ref buf, buf.Length);
 
@@ -128,71 +172,146 @@ namespace Pechkin
         }
         public static IntPtr CreateConverter(IntPtr globalSettings)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Creating converter (wkhtmltopdf_create_converter)");
+            }
+
             return PechkinBindings.wkhtmltopdf_create_converter(globalSettings);
         }
         public static void DestroyConverter(IntPtr converter)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Destroying converter (wkhtmltopdf_destroy_converter)");
+            }
+
             PechkinBindings.wkhtmltopdf_destroy_converter(converter);
         }
         public static void SetWarningCallback(IntPtr converter, StringCallback callback)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting warning callback (wkhtmltopdf_set_warning_callback)");
+            }
+
             PechkinBindings.wkhtmltopdf_set_warning_callback(converter, callback);
         }
         public static void SetErrorCallback(IntPtr converter, StringCallback callback)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting error callback (wkhtmltopdf_set_error_callback)");
+            }
+
             PechkinBindings.wkhtmltopdf_set_error_callback(converter, callback);
         }
         public static void SetFinishedCallback(IntPtr converter, IntCallback callback)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting finished callback (wkhtmltopdf_set_finished_callback)");
+            }
+
             PechkinBindings.wkhtmltopdf_set_finished_callback(converter, callback);
         }
         public static void SetPhaseChangeCallback(IntPtr converter, VoidCallback callback)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting phase change callback (wkhtmltopdf_set_phase_changed_callback)");
+            }
+
             PechkinBindings.wkhtmltopdf_set_phase_changed_callback(converter, callback);
         }
         public static void SetProgressChangeCallback(IntPtr converter, IntCallback callback)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting progress change callback (wkhtmltopdf_set_progress_changed_callback)");
+            }
+
             PechkinBindings.wkhtmltopdf_set_progress_changed_callback(converter, callback);
         }
 
         public static bool PerformConversion(IntPtr converter)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Starting conversion (wkhtmltopdf_convert)");
+            }
+
             return PechkinBindings.wkhtmltopdf_convert(converter) != 0;
         }
 
         public static void AddObject(IntPtr converter, IntPtr objectConfig, string html)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Adding string object (wkhtmltopdf_add_object)");
+            }
+
             PechkinBindings.wkhtmltopdf_add_object(converter, objectConfig, html);
         }
         public static void AddObject(IntPtr converter, IntPtr objectConfig, byte[] html)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Adding byte[] object (wkhtmltopdf_add_object)");
+            }
+
             PechkinBindings.wkhtmltopdf_add_object(converter, objectConfig, html);
         }
 
         public static int GetPhaseNumber(IntPtr converter)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting current phase (wkhtmltopdf_current_phase)");
+            }
+
             return PechkinBindings.wkhtmltopdf_current_phase(converter);
         }
 
         public static int GetPhaseCount(IntPtr converter)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting phase count (wkhtmltopdf_phase_count)");
+            }
+
             return PechkinBindings.wkhtmltopdf_phase_count(converter);
         }
 
         public static string GetPhaseDescription(IntPtr converter, int phase)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting phase description (wkhtmltopdf_phase_description)");
+            }
+
             IntPtr pStr = PechkinBindings.wkhtmltopdf_phase_description(converter, phase);
             return Marshal.PtrToStringAnsi(pStr);
         }
 
         public static string GetProgressDescription(IntPtr converter)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting progress string (wkhtmltopdf_progress_string)");
+            }
+
             IntPtr pStr = PechkinBindings.wkhtmltopdf_progress_string(converter);
             return Marshal.PtrToStringAnsi(pStr);
         }
 
         public static int GetHttpErrorCode(IntPtr converter)
         {
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting http error code (wkhtmltopdf_http_error_code)");
+            }
+
             return PechkinBindings.wkhtmltopdf_http_error_code(converter);
         }
 
@@ -207,6 +326,11 @@ namespace Pechkin
             return buf;
             */
 
+            if (Log.IsTraceEnabled)
+            {
+                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting converter result (wkhtmltopdf_get_output)");
+            }
+
             IntPtr tmp;
             var len = PechkinBindings.wkhtmltopdf_get_output(converter, out tmp);
             var output = new byte[len];
@@ -217,11 +341,27 @@ namespace Pechkin
 
         public static string Version
         {
-            get { return PechkinBindings.wkhtmltopdf_version(); }
+            get
+            {
+                if (Log.IsTraceEnabled)
+                {
+                    Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting library version (wkhtmltopdf_version)");
+                }
+
+                return PechkinBindings.wkhtmltopdf_version();
+            }
         }
         public static bool EntendedQtAvailable
         {
-            get { return PechkinBindings.wkhtmltopdf_extended_qt() != 0; }
+            get
+            {
+                if (Log.IsTraceEnabled)
+                {
+                    Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting extended Qt availability (wkhtmltopdf_extended_qt)");
+                }
+
+                return PechkinBindings.wkhtmltopdf_extended_qt() != 0;
+            }
         }
 
         internal class StrPaperSize

@@ -101,5 +101,25 @@ namespace PechkinTests
 
             TestEnd();
         }
+
+        [Fact]
+        public void ObjectIsHappilyGarbageCollected()
+        {
+            string html = GetResourceString("PechkinTests.Resources.page.html");
+
+            TConvType c = ProduceTestObject(new GlobalConfig());
+            byte[] ret = c.Convert(html);
+
+            Assert.NotNull(ret);
+
+            c = ProduceTestObject(new GlobalConfig());
+            ret = c.Convert(html);
+
+            Assert.NotNull(ret);
+            
+            GC.Collect();
+
+            TestEnd();
+        }
     }
 }

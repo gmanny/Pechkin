@@ -10,11 +10,11 @@
     <!-->iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Thread safe implementation that lets you use Pechkin from different threads.</description>
-    <releaseNotes>Added ability to supply byte[] for html (useful, when you don't know the encoding and it can change).</releaseNotes>
+    <releaseNotes>Fixed bug in SimplePechkin that caused event handlers to be cleaned by GC right after they're installed. Removed unneded workaround.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Html PDF Wrapper Converter Webkit Synchronous Blocking</tags>
     <dependencies>
-        <dependency id="Pechkin" version="0.5.5.0" />
+        <dependency id="Pechkin" version="0.5.6.1" />
     </dependencies>
   </metadata>
 </package>
