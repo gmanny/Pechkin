@@ -10,7 +10,7 @@ FAQ
 
 **A:** By dafult, all backgrounds will be ommited from the document.
 
-You can override this setting by calling `SetPrintBackground(true)` on the `ObjectConfig` supplied with the HTML document.
+You can override this setting by calling `SetPrintBackground(true)` on the `ObjectConfig` supplied with the HTML document to the `Convert()` method of the converter.
 
 Usage
 -----
