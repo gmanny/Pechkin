@@ -6,9 +6,9 @@ Pechkin
 FAQ
 ---
 
-h3. Q: Why produced PDF lacks background images and colors?
+### Q: Why produced PDF lacks background images and colors? ###
 
-*A:* By dafult, all backgrounds will be ommited from the document.
+**A:** By dafult, all backgrounds will be ommited from the document.
 
 You can override this setting by calling @SetPrintBackground(true)@ on the @ObjectConfig@ supplied with the HTML document.
 
