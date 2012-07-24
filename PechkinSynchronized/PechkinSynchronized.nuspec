@@ -10,7 +10,7 @@
     <!-->iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Thread safe implementation that lets you use Pechkin from different threads.</description>
-    <releaseNotes>Fixed bug in SimplePechkin that caused event handlers to be cleaned by GC right after they're installed. Removed unneded workaround.</releaseNotes>
+    <releaseNotes>Moved SynchronizedPechkin from DispatcherThread to SynchronizedDispatcherThread eliminating dependency on WPF libraries</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Html PDF Wrapper Converter Webkit Synchronous Blocking</tags>
     <dependencies>

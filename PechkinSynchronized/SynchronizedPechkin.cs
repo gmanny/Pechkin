@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using Pechkin.EventHandlers;
 using Pechkin.Synchronized.Util;
 using ProgressChangedEventHandler = Pechkin.EventHandlers.ProgressChangedEventHandler;
@@ -19,7 +18,7 @@ namespace Pechkin.Synchronized
         //private readonly ILog _log = LogManager.GetCurrentClassLogger();
 
         private readonly IPechkin _converter;
-        private static ISynchronizeInvoke _synchronizer = new DispatcherThread();
+        private static SynchronizedDispatcherThread _synchronizer = new SynchronizedDispatcherThread();
 
         /// <summary>
         /// This method is used to stop service thread when executing tests. 
@@ -30,8 +29,7 @@ namespace Pechkin.Synchronized
         {
             if (_synchronizer != null)
             {
-                DispatcherThread dispatcherThread = _synchronizer as DispatcherThread;
-                if (dispatcherThread != null) dispatcherThread.Terminate();
+                _synchronizer.Terminate();
                 _synchronizer = null;
             }
         }
@@ -43,13 +41,6 @@ namespace Pechkin.Synchronized
         public SynchronizedPechkin(GlobalConfig config)
         {
             _converter = (IPechkin) _synchronizer.Invoke((Func<GlobalConfig, IPechkin>)(cfg => new SimplePechkin(cfg)), new[] { config });
-
-            //_synchronizer.Invoke((Action<IPechkin, BeginEventHandler>)((conv, handler) => { conv.Begin += handler; }), new object[] { _converter, Begin });
-            //_synchronizer.Invoke((Action<IPechkin, WarningEventHandler>)((conv, handler) => { conv.Warning += handler; }), new object[] { _converter, Warning });
-            //_synchronizer.Invoke((Action<IPechkin, ErrorEventHandler>)((conv, handler) => { conv.Error += handler; }), new object[] { _converter, Error });
-            //_synchronizer.Invoke((Action<IPechkin, PhaseChangedEventHandler>)((conv, handler) => { conv.PhaseChanged += handler; }), new object[] { _converter, PhaseChanged });
-            //_synchronizer.Invoke((Action<IPechkin, ProgressChangedEventHandler>)((conv, handler) => { conv.ProgressChanged += handler; }), new object[] { _converter, ProgressChanged });
-            //_synchronizer.Invoke((Action<IPechkin, FinishEventHandler>)((conv, handler) => { conv.Finished += handler; }), new object[] { _converter, Finished });
         }
 
         /// <summary>
