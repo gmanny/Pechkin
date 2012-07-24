@@ -1,7 +1,7 @@
 Pechkin
 =======
 
-.NET Wrapper for WkHtmlToPdf DLL.
+.NET Wrapper for WkHtmlToPdf DLL, library that uses Webkit engine to convert HTML pages to PDF.
 
 FAQ
 ---
