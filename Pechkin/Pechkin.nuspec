@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/gmanny/Pechkin</projectUrl>
     <!-->iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>.NET Wrapper for WkHtmlToPdf static DLL. Allows you to utilize full power of the library.</description>
+    <description>.NET Wrapper for WkHtmlToPdf static DLL, library that uses Webkit engine to convert HTML pages to PDF. Allows you to utilize full power of the library. See Pechkin.Synchronized for thread safe wrapper.</description>
     <releaseNotes>Fixed bug in SimplePechkin that caused event handlers to be cleaned by GC right after they're installed. Removed unneded workaround.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Html PDF Wrapper Converter Webkit</tags>

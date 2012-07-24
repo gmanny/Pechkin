@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/gmanny/Pechkin</projectUrl>
     <!-->iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Thread safe implementation that lets you use Pechkin from different threads.</description>
+    <description>Thread safe wrapper for Pechkin Html to PDF library. Allows your multiple threads to use Pechkin, while actually working with it from only one thread.</description>
     <releaseNotes>Moved SynchronizedPechkin from DispatcherThread to SynchronizedDispatcherThread eliminating dependency on WPF libraries</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Html PDF Wrapper Converter Webkit Synchronous Blocking</tags>
