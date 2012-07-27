@@ -1,21 +1,26 @@
 Pechkin
 =======
 
-.NET Wrapper for WkHtmlToPdf DLL, library that uses Webkit engine to convert HTML pages to PDF.
+.NET Wrapper for [WkHtmlToPdf](http://github.com/antialize/wkhtmltopdf) DLL, library that uses Webkit engine to convert HTML pages to PDF.
 
 FAQ
 ---
 
 ### Q: Why produced PDF lacks background images and colors? ###
 
-**A:** By dafult, all backgrounds will be ommited from the document.
+**A:** By dafault, all backgrounds will be ommited from the document.
 
 You can override this setting by calling `SetPrintBackground(true)` on the `ObjectConfig` supplied with the HTML document to the `Convert()` method of the converter.
+
+NuGet
+-----
+
+Pechkin is available in NuGet repo: in most cases you should use [SynchronizedPechkin](https://nuget.org/packages/Pechkin.Synchronized) as it protects multithreaded code from crashing the lib. But for simple usage from one thread, you can use [SimplePechkin](https://nuget.org/packages/Pechkin) directly.
 
 Usage
 -----
 
-Pechkin is both very easy to use
+Pechkin is both easy to use
 
 ```csharp
 byte[] pdfBuf = new SimplePechkin(new GlobalConfig()).Convert("<html><body><h1>Hello world!</h1></body></html>");
