@@ -16,7 +16,7 @@ You can override this setting by calling `SetPrintBackground(true)` on the `Obje
 
 **A:** No, latest version of wkhtmltox DLL is included in the project (and in NuGet package) along with its dependencies, and copied into build folder on project build.
 
-So there's no need to install eny prerequisites before using the library on the computer.
+So there's no need to install any prerequisites before using the library on the computer.
 
 ### Q: How to build library from the code? ###
 
