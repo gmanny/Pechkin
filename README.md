@@ -12,6 +12,22 @@ FAQ
 
 You can override this setting by calling `SetPrintBackground(true)` on the `ObjectConfig` supplied with the HTML document to the `Convert()` method of the converter.
 
+### Q: Do I need to run wkhtmltox installer on the machine for the library to work? ###
+
+**A:** No, latest version of wkhtmltox DLL is included in the project (and in NuGet package) along with its dependencies, and copied into build folder on project build.
+
+So there's no need to install eny prerequisites before using the library on the computer.
+
+### Q: How to build library from the code? ###
+
+**A:** To build the library from the code, you'll need Visual Studio 2010 with NuGet package manager [installed](http://docs.nuget.org/docs/start-here/installing-nuget). Then, after checking out the code and opening it in VS you should restore NuGet packages: right click on the solution, select **Manage NuGet Packages...** and in the opened window you should see notification that some packages are missing with the button that restores them.
+
+[Alternatively](http://stackoverflow.com/questions/6876732/how-do-i-get-nuget-to-install-update-all-the-packages-in-the-packages-config) you can run
+```
+nuget install packages.config
+```
+for every project in the solution. (Two test projects with xunit, others supporting Common.Logging.)
+
 NuGet
 -----
 
@@ -62,3 +78,8 @@ oc.SetCreateExternalLinks(false)
 // convert document
 byte[] pdfBuf = pechkin.Convert(oc);
 ```
+
+License
+-------
+
+Copyright 2012 by Slava Kolobaev. This work is made available under the terms of the Creative Commons Attribution 3.0 license, http://creativecommons.org/licenses/by/3.0/

@@ -10,11 +10,11 @@
     <!-->iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Thread safe wrapper for Pechkin Html to PDF library. Allows your multiple threads to use Pechkin, while actually working with it from only one thread.</description>
-    <releaseNotes>Moved SynchronizedPechkin from DispatcherThread to SynchronizedDispatcherThread eliminating dependency on WPF libraries</releaseNotes>
+    <releaseNotes>Moved SynchronizedPechkin from DispatcherThread to SynchronizedDispatcherThread eliminating dependency on WPF libraries. 0.5.8.0 is just a release to notify that bug was fixed.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Html PDF Wrapper Converter Webkit Synchronous Blocking</tags>
     <dependencies>
-        <dependency id="Pechkin" version="0.5.6.1" />
+        <dependency id="Pechkin" version="0.5.8.0" />
     </dependencies>
   </metadata>
 </package>
