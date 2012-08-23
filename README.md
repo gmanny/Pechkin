@@ -28,6 +28,12 @@ nuget install packages.config
 
 And then you should be able to build everything with **Build** > **Build Solution** menu item.
 
+### Q: Why my Web App hangs on the "easy to use" code example below? ###
+
+**A:** In Web applications new thread is typically created for each reauest processed. `SimplePechkin` is designed to work only within one thread, so you should use `SynchronizedPechkin` instead. Just install another NuGet package and change every occurence of `SimplePechkin` to `SynchronizedPechkin`, that's it.
+
+I will implement detection of multiple thread use of `SimplePechkin` in the future and there will be exception thrown in that case.
+
 NuGet
 -----
 
