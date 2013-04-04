@@ -77,7 +77,7 @@ ObjectConfig oc = new ObjectConfig();
 // and set it up using fluent notation too
 oc.SetCreateExternalLinks(false)
   .SetFallbackEncoding(Encoding.ASCII)
-  .SetLoadImages(false);
+  .SetLoadImages(false)
   .SetPageUri("http://google.com");
 //... etc
 
