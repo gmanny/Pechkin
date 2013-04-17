@@ -34,6 +34,12 @@ And then you should be able to build everything with **Build** > **Build Solutio
 
 I will implement detection of multiple thread use of `SimplePechkin` in the future and there will be exception thrown in that case.
 
+### Q: Why my Web App hangs/crashes even after I've started using `SynchronizedPechkin` ###
+
+**A:** It's because of [how deploying to the IIS works](https://github.com/gmanny/Pechkin/issues/5#issuecomment-13089599): on redeploy server process doesn't stop and the native wkhtmltopdf dll stays in the memory, but everything managed is destroyed, including the only thread that this DLL can be used by.
+
+Possible [workaround](https://github.com/gmanny/Pechkin/issues/26#issuecomment-13931795) is to set the property `Copy To Output Directory` for all `.dll` files in Pechkin (NuGet package adds them to the root of your project) to `Copy If Newer`. Otherwise it's an unresolved issue.
+
 NuGet
 -----
 
