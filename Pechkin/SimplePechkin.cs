@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Common.Logging;
@@ -14,6 +15,7 @@ namespace Pechkin
     /// Even two objects can't be used from different thread simultaneously. For that purpose you should use
     /// <code>SynchronizedPechkin</code> from <code>Pechkin.Synchronized</code> package.
     /// </summary>
+    [Serializable]
     public class SimplePechkin : IPechkin, IDisposable
     {
         private readonly ILog _log = LogManager.GetCurrentClassLogger();
@@ -21,7 +23,6 @@ namespace Pechkin
         private readonly GlobalConfig _globalConfig;
         private IntPtr _globalConfigUnmanaged;
         private IntPtr _converter = IntPtr.Zero;
-        private bool _reinitConverter;
 
         /// <summary>
         /// This event happens every time the conversion starts
@@ -40,8 +41,10 @@ namespace Pechkin
             BeginEventHandler handler = Begin;
             try
             {
-                if (handler != null) handler(this, expectedPhaseCount);
-            } catch (Exception e)
+                if (handler != null)
+                    handler(this, expectedPhaseCount);
+            }
+            catch (Exception e)
             {
                 _log.Warn("T:" + Thread.CurrentThread.Name + " Exception in Begin event handler", e);
             }
@@ -55,6 +58,7 @@ namespace Pechkin
         public event WarningEventHandler Warning;
 
         private readonly StringCallback _warningCallback;
+
         protected virtual void OnWarning(IntPtr converter, string warningText)
         {
             if (_log.IsTraceEnabled)
@@ -65,7 +69,8 @@ namespace Pechkin
             WarningEventHandler handler = Warning;
             try
             {
-                if (handler != null) handler(this, warningText);
+                if (handler != null)
+                    handler(this, warningText);
             }
             catch (Exception e)
             {
@@ -81,6 +86,7 @@ namespace Pechkin
         public event ErrorEventHandler Error;
 
         private readonly StringCallback _errorCallback;
+
         protected virtual void OnError(IntPtr converter, string errorText)
         {
             if (_log.IsTraceEnabled)
@@ -91,7 +97,8 @@ namespace Pechkin
             ErrorEventHandler handler = Error;
             try
             {
-                if (handler != null) handler(this, errorText);
+                if (handler != null)
+                    handler(this, errorText);
             }
             catch (Exception e)
             {
@@ -105,6 +112,7 @@ namespace Pechkin
         public event PhaseChangedEventHandler PhaseChanged;
 
         private readonly VoidCallback _phaseChangedCallback;
+
         protected virtual void OnPhaseChanged(IntPtr converter)
         {
             int phaseNumber = PechkinStatic.GetPhaseNumber(converter);
@@ -118,7 +126,8 @@ namespace Pechkin
             PhaseChangedEventHandler handler = PhaseChanged;
             try
             {
-                if (handler != null) handler(this, phaseNumber, phaseDescription);
+                if (handler != null)
+                    handler(this, phaseNumber, phaseDescription);
             }
             catch (Exception e)
             {
@@ -134,6 +143,7 @@ namespace Pechkin
         public event ProgressChangedEventHandler ProgressChanged;
 
         private readonly IntCallback _progressChangedCallback;
+
         protected virtual void OnProgressChanged(IntPtr converter, int progress)
         {
             string progressDescription = PechkinStatic.GetProgressDescription(converter);
@@ -146,7 +156,8 @@ namespace Pechkin
             ProgressChangedEventHandler handler = ProgressChanged;
             try
             {
-                if (handler != null) handler(this, progress, progressDescription);
+                if (handler != null)
+                    handler(this, progress, progressDescription);
             }
             catch (Exception e)
             {
@@ -160,6 +171,7 @@ namespace Pechkin
         public event FinishEventHandler Finished;
 
         private readonly IntCallback _finishedCallback;
+
         protected virtual void OnFinished(IntPtr converter, int success)
         {
             if (_log.IsTraceEnabled)
@@ -170,7 +182,8 @@ namespace Pechkin
             FinishEventHandler handler = Finished;
             try
             {
-                if (handler != null) handler(this, success != 0);
+                if (handler != null)
+                    handler(this, success != 0);
             }
             catch (Exception e)
             {
@@ -195,16 +208,14 @@ namespace Pechkin
             if (_log.IsTraceEnabled)
                 _log.Trace("T:" + Thread.CurrentThread.Name + " Created converter");
 
-            PechkinStatic.SetErrorCallback(_converter, _errorCallback);
-            PechkinStatic.SetWarningCallback(_converter, _warningCallback);
-            PechkinStatic.SetPhaseChangeCallback(_converter, _phaseChangedCallback);
-            PechkinStatic.SetProgressChangeCallback(_converter, _progressChangedCallback);
-            PechkinStatic.SetFinishedCallback(_converter, _finishedCallback);
+            PechkinStatic.SetErrorCallback(_converter, OnError);
+            PechkinStatic.SetWarningCallback(_converter, OnWarning);
+            PechkinStatic.SetPhaseChangeCallback(_converter, OnPhaseChanged);
+            PechkinStatic.SetProgressChangeCallback(_converter, OnProgressChanged);
+            PechkinStatic.SetFinishedCallback(_converter, OnFinished);
 
             if (_log.IsTraceEnabled)
                 _log.Trace("T:" + Thread.CurrentThread.Name + " Added callbacks to converter");
-
-            _reinitConverter = false;
         }
 
         /// <summary>
@@ -216,21 +227,10 @@ namespace Pechkin
             if (_log.IsTraceEnabled)
                 _log.Trace("T:" + Thread.CurrentThread.Name + " Creating SimplePechkin");
 
-            // create and STORE delegates to protect them from GC
-            _errorCallback = OnError;
-            _finishedCallback = OnFinished;
-            _phaseChangedCallback = OnPhaseChanged;
-            _progressChangedCallback = OnProgressChanged;
-            _warningCallback = OnWarning;
-            
-            PechkinStatic.InitLib(false);
-
             _globalConfig = config;
             
             if (_log.IsTraceEnabled)
                 _log.Trace("T:" + Thread.CurrentThread.Name + " Created global config");
-
-            CreateConverter();
         }
 
         public void Dispose()
@@ -242,6 +242,8 @@ namespace Pechkin
 
                 PechkinStatic.DestroyConverter(_converter);
             }
+
+            PechkinStatic.DeinitLib();
         }
 
         /// <summary>
@@ -256,10 +258,7 @@ namespace Pechkin
         /// <returns>PDF document body</returns>
         public byte[] Convert(ObjectConfig doc, byte[] html)
         {
-            if (_reinitConverter)
-            {
-                CreateConverter();
-            }
+            CreateConverter();
 
             // create unmanaged object config
             IntPtr objConf = doc.CreateObjectConfig();
@@ -276,26 +275,17 @@ namespace Pechkin
             // run OnBegin
             OnBegin(_converter);
 
-            try
+            // run conversion process
+            if (!PechkinStatic.PerformConversion(_converter))
             {
-                // run conversion process
-                if (!PechkinStatic.PerformConversion(_converter))
-                {
-                    if (_log.IsTraceEnabled)
-                        _log.Trace("T:" + Thread.CurrentThread.Name + " Conversion failed, null returned");
+                if (_log.IsTraceEnabled)
+                    _log.Trace("T:" + Thread.CurrentThread.Name + " Conversion failed, null returned");
 
-                    return null;
-                }
+                return null;
+            }
 
-                // get output
-                return PechkinStatic.GetConverterResult(_converter);
-            }
-            finally
-            {
-                // next time we'll need a new one, but for now we'll preserve the old one for the properties (such as http error code)
-                // to work properly
-                _reinitConverter = true;
-            }
+            // get output
+            return PechkinStatic.GetConverterResult(_converter);
         }
 
         /// <summary>
@@ -320,6 +310,7 @@ namespace Pechkin
         {
             return Convert(doc, (byte[])null);
         }
+
         /// <summary>
         /// Converts HTML string to PDF with default settings.
         /// </summary>
@@ -329,6 +320,7 @@ namespace Pechkin
         {
             return Convert(new ObjectConfig(), html);
         }
+
         /// <summary>
         /// Converts HTML string to PDF with default settings.
         /// 
@@ -360,8 +352,12 @@ namespace Pechkin
         /// </summary>
         public int CurrentPhase
         {
-            get { return PechkinStatic.GetPhaseNumber(_converter); }
+            get
+            {
+                return PechkinStatic.GetPhaseNumber(_converter);
+            }
         }
+
         /// <summary>
         /// Phase count for the current conversion process.
         /// 
@@ -369,8 +365,12 @@ namespace Pechkin
         /// </summary>
         public int PhaseCount
         {
-            get { return PechkinStatic.GetPhaseCount(_converter); }
+            get
+            {
+                return PechkinStatic.GetPhaseCount(_converter);
+            }
         }
+
         /// <summary>
         /// Current phase string description for the converter.
         /// 
@@ -378,8 +378,12 @@ namespace Pechkin
         /// </summary>
         public string PhaseDescription
         {
-            get { return PechkinStatic.GetPhaseDescription(_converter, CurrentPhase); }
+            get
+            {
+                return PechkinStatic.GetPhaseDescription(_converter, CurrentPhase);
+            }
         }
+
         /// <summary>
         /// Current progress string description. It includes percent count, btw.
         /// 
@@ -387,14 +391,21 @@ namespace Pechkin
         /// </summary>
         public string ProgressString
         {
-            get { return PechkinStatic.GetProgressDescription(_converter); }
+            get
+            {
+                return PechkinStatic.GetProgressDescription(_converter);
+            }
         }
+
         /// <summary>
         /// Error code returned by server when converter tried to request the page or the resource. Should be available after failed conversion attempt.
         /// </summary>
         public int HttpErrorCode
         {
-            get { return PechkinStatic.GetHttpErrorCode(_converter); }
+            get
+            {
+                return PechkinStatic.GetHttpErrorCode(_converter);
+            }
         }
     }
 }
