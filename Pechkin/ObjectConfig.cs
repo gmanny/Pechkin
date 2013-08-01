@@ -16,6 +16,7 @@ namespace Pechkin
     [Serializable]
     public class ObjectConfig
     {
+        [Serializable]
         public class HeaderSettings
         {
             private string _fontSize; // font size for the header in pt, e.g. "13"

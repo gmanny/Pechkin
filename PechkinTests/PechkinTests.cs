@@ -2,11 +2,13 @@
 
 namespace PechkinTests
 {
-    public class PechkinTests : PechkinAbstractTests<SimplePechkin>
+    public class PechkinTests : PechkinAbstractTests<IPechkin>
     {
-        protected override SimplePechkin ProduceTestObject(GlobalConfig cfg)
+        protected override IPechkin ProduceTestObject(GlobalConfig cfg)
         {
-            return new SimplePechkin(cfg);
+            Factory.UseSynchronization = false;
+
+            return Factory.Create(cfg);
         }
 
         protected override void TestEnd()

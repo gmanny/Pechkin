@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pechkin", "Pechkin\Pechkin.csproj", "{023DF833-B252-48B3-B6AF-DBBB13E39B13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PechkinTestApp", "PechkinTestApp\PechkinTestApp.csproj", "{35E72E2C-DE58-4ED7-9B47-5EF13860AF42}"
@@ -13,10 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{87D319
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PechkinTests", "PechkinTests\PechkinTests.csproj", "{D58769FA-E008-4016-A81C-A85C606B3691}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PechkinSynchronized", "PechkinSynchronized\PechkinSynchronized.csproj", "{5D9C16E1-A2C2-433B-AE55-1477EBEDA880}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PechkinSynchronizedTests", "PechkinSynchronizedTests\PechkinSynchronizedTests.csproj", "{E889D243-A599-4F0E-A186-2439917FC7F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,14 +32,6 @@ Global
 		{D58769FA-E008-4016-A81C-A85C606B3691}.Debug|x86.Build.0 = Debug|x86
 		{D58769FA-E008-4016-A81C-A85C606B3691}.Release|x86.ActiveCfg = Release|x86
 		{D58769FA-E008-4016-A81C-A85C606B3691}.Release|x86.Build.0 = Release|x86
-		{5D9C16E1-A2C2-433B-AE55-1477EBEDA880}.Debug|x86.ActiveCfg = Debug|x86
-		{5D9C16E1-A2C2-433B-AE55-1477EBEDA880}.Debug|x86.Build.0 = Debug|x86
-		{5D9C16E1-A2C2-433B-AE55-1477EBEDA880}.Release|x86.ActiveCfg = Release|x86
-		{5D9C16E1-A2C2-433B-AE55-1477EBEDA880}.Release|x86.Build.0 = Release|x86
-		{E889D243-A599-4F0E-A186-2439917FC7F6}.Debug|x86.ActiveCfg = Debug|x86
-		{E889D243-A599-4F0E-A186-2439917FC7F6}.Debug|x86.Build.0 = Debug|x86
-		{E889D243-A599-4F0E-A186-2439917FC7F6}.Release|x86.ActiveCfg = Release|x86
-		{E889D243-A599-4F0E-A186-2439917FC7F6}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

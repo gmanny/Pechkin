@@ -7,15 +7,10 @@ namespace Pechkin
     [Serializable]
     internal static class PechkinBindings
     {
-        public static StringCallback warning_callback;
+        public static String LibFilename = "wkhtmltox0.dll";
 
-        public static StringCallback error_callback;
-
-        public static VoidCallback phase_changed_callback;
-
-        public static IntCallback progress_changed_callback;
-
-        public static IntCallback finished_callback;
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Utf8Marshaler))] String filename);
 
         [DllImport("kernel32", SetLastError = true)]
         public static extern bool FreeLibrary(IntPtr hModule);

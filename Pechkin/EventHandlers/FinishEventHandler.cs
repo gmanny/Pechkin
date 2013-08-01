@@ -1,4 +1,4 @@
 namespace Pechkin.EventHandlers
 {
-    public delegate void FinishEventHandler(SimplePechkin converter, bool success);
+    public delegate void FinishEventHandler(IPechkin converter, bool success);
 }

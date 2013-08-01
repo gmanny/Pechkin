@@ -9,20 +9,23 @@ using Pechkin.Util;
 namespace Pechkin
 {
     /// <summary>
-    /// Simple HTML to PDF converter.
-    /// 
-    /// This class isn't thread safe and should be used from one thread. 
-    /// Even two objects can't be used from different thread simultaneously. For that purpose you should use
-    /// <code>SynchronizedPechkin</code> from <code>Pechkin.Synchronized</code> package.
+    /// Covers the necessary converter functionality, for internal
+    /// use behind a remote proxy implementing the same interface.
     /// </summary>
     [Serializable]
-    public class SimplePechkin : IPechkin, IDisposable
+    internal class SimplePechkin : MarshalByRefObject, IPechkin
     {
+        public bool IsDisposed { get; private set; }
+
         private readonly ILog _log = LogManager.GetCurrentClassLogger();
 
         private readonly GlobalConfig _globalConfig;
         private IntPtr _globalConfigUnmanaged;
         private IntPtr _converter = IntPtr.Zero;
+
+        public event DisposedEventHandler Disposed;
+
+        #region events
 
         /// <summary>
         /// This event happens every time the conversion starts
@@ -57,8 +60,6 @@ namespace Pechkin
         /// </summary>
         public event WarningEventHandler Warning;
 
-        private readonly StringCallback _warningCallback;
-
         protected virtual void OnWarning(IntPtr converter, string warningText)
         {
             if (_log.IsTraceEnabled)
@@ -85,8 +86,6 @@ namespace Pechkin
         /// </summary>
         public event ErrorEventHandler Error;
 
-        private readonly StringCallback _errorCallback;
-
         protected virtual void OnError(IntPtr converter, string errorText)
         {
             if (_log.IsTraceEnabled)
@@ -110,8 +109,6 @@ namespace Pechkin
         /// This event handler signals phase change of the conversion process.
         /// </summary>
         public event PhaseChangedEventHandler PhaseChanged;
-
-        private readonly VoidCallback _phaseChangedCallback;
 
         protected virtual void OnPhaseChanged(IntPtr converter)
         {
@@ -142,8 +139,6 @@ namespace Pechkin
         /// </summary>
         public event ProgressChangedEventHandler ProgressChanged;
 
-        private readonly IntCallback _progressChangedCallback;
-
         protected virtual void OnProgressChanged(IntPtr converter, int progress)
         {
             string progressDescription = PechkinStatic.GetProgressDescription(converter);
@@ -170,8 +165,6 @@ namespace Pechkin
         /// </summary>
         public event FinishEventHandler Finished;
 
-        private readonly IntCallback _finishedCallback;
-
         protected virtual void OnFinished(IntPtr converter, int success)
         {
             if (_log.IsTraceEnabled)
@@ -188,6 +181,43 @@ namespace Pechkin
             catch (Exception e)
             {
                 _log.Warn("T:" + Thread.CurrentThread.Name + " Exception in Finish event handler", e);
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Constructs HTML to PDF converter instance from <code>GlobalConfig</code>.
+        /// </summary>
+        /// <param name="config">global configuration object</param>
+        public SimplePechkin(GlobalConfig config)
+        {
+            if (_log.IsTraceEnabled)
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Creating SimplePechkin");
+
+            _globalConfig = config;
+            
+            if (_log.IsTraceEnabled)
+                _log.Trace("T:" + Thread.CurrentThread.Name + " Created global config");
+
+            this.IsDisposed = false;
+        }
+
+        public void Dispose()
+        {
+            if (!_converter.Equals(IntPtr.Zero))
+            {
+                if (_log.IsTraceEnabled)
+                    _log.Trace("T:" + Thread.CurrentThread.Name + " Releasing unmanaged converter");
+
+                PechkinStatic.DestroyConverter(_converter);
+            }
+
+            this.IsDisposed = true;
+
+            if (this.Disposed != null)
+            {
+                this.Disposed(this);
             }
         }
 
@@ -210,40 +240,12 @@ namespace Pechkin
 
             PechkinStatic.SetErrorCallback(_converter, OnError);
             PechkinStatic.SetWarningCallback(_converter, OnWarning);
-            PechkinStatic.SetPhaseChangeCallback(_converter, OnPhaseChanged);
-            PechkinStatic.SetProgressChangeCallback(_converter, OnProgressChanged);
+            PechkinStatic.SetPhaseChangedCallback(_converter, OnPhaseChanged);
+            PechkinStatic.SetProgressChangedCallback(_converter, OnProgressChanged);
             PechkinStatic.SetFinishedCallback(_converter, OnFinished);
 
             if (_log.IsTraceEnabled)
                 _log.Trace("T:" + Thread.CurrentThread.Name + " Added callbacks to converter");
-        }
-
-        /// <summary>
-        /// Constructs HTML to PDF converter instance from <code>GlobalConfig</code>.
-        /// </summary>
-        /// <param name="config">global configuration object</param>
-        public SimplePechkin(GlobalConfig config)
-        {
-            if (_log.IsTraceEnabled)
-                _log.Trace("T:" + Thread.CurrentThread.Name + " Creating SimplePechkin");
-
-            _globalConfig = config;
-            
-            if (_log.IsTraceEnabled)
-                _log.Trace("T:" + Thread.CurrentThread.Name + " Created global config");
-        }
-
-        public void Dispose()
-        {
-            if (!_converter.Equals(IntPtr.Zero))
-            {
-                if (_log.IsTraceEnabled)
-                    _log.Trace("T:" + Thread.CurrentThread.Name + " Releasing unmanaged converter");
-
-                PechkinStatic.DestroyConverter(_converter);
-            }
-
-            PechkinStatic.DeinitLib();
         }
 
         /// <summary>

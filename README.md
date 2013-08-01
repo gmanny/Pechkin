@@ -6,7 +6,7 @@ Pechkin
 FAQ
 ---
 
-### Q: Why produced PDF lacks background images and colors? ###
+### Q: Why does the produced PDF lacks background images and colors? ###
 
 **A:** By dafault, all backgrounds will be ommited from the document.
 
@@ -14,7 +14,7 @@ You can override this setting by calling `SetPrintBackground(true)` on the `Obje
 
 ### Q: Do I need to run wkhtmltox installer on the machine for the library to work? ###
 
-**A:** No, latest version of wkhtmltox DLL is included in the project (and in NuGet package) along with its dependencies, and copied into build folder on project build.
+**A:** No, the latest version of wkhtmltox DLL is included in the project (and in NuGet package) along with its dependencies, and copied into build folder on project build.
 
 So there's no need to install any prerequisites before using the library on the computer.
 
@@ -28,18 +28,6 @@ nuget install packages.config
 
 And then you should be able to build everything with **Build** > **Build Solution** menu item.
 
-### Q: Why my Web App hangs on the "easy to use" code example below? ###
-
-**A:** In Web applications new thread is typically created for each request processed. `SimplePechkin` is designed to work only within one thread, even if you create another object for every thread, so you should use `SynchronizedPechkin` instead. Just install another NuGet package and change every occurence of `SimplePechkin` to `SynchronizedPechkin`, that's it.
-
-I will implement detection of multiple thread use of `SimplePechkin` in the future and there will be exception thrown in that case.
-
-### Q: Why my Web App hangs/crashes even after I've started using `SynchronizedPechkin` ###
-
-**A:** It's because of [how deploying to the IIS works](https://github.com/gmanny/Pechkin/issues/5#issuecomment-13089599): on redeploy server process doesn't stop and the native wkhtmltopdf dll stays in the memory, but everything managed is destroyed, including the only thread that this DLL can be used by.
-
-Possible [workaround](https://github.com/gmanny/Pechkin/issues/26#issuecomment-13931795) is to set the property `Copy To Output Directory` for all `.dll` files in Pechkin (NuGet package adds them to the root of your project) to `Copy If Newer`. Otherwise it's an unresolved issue.
-
 NuGet
 -----
 
@@ -51,7 +39,7 @@ Usage
 Pechkin is both easy to use
 
 ```csharp
-byte[] pdfBuf = new SimplePechkin(new GlobalConfig()).Convert("<html><body><h1>Hello world!</h1></body></html>");
+byte[] pdfBuf = Factory.Create(new GlobalConfig()).Convert("<html><body><h1>Hello world!</h1></body></html>");
 ```
 
 and functional
@@ -67,7 +55,7 @@ gc.SetMargins(new Margins(300, 100, 150, 100))
 //... etc
 
 // create converter
-IPechkin pechkin = new SynchronizedPechkin(gc);
+IPechkin pechkin = Factory.Create(gc);
 
 // subscribe to events
 pechkin.Begin += OnBegin;

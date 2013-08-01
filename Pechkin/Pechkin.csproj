@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventHandlers\BeginEventHandler.cs" />
+    <Compile Include="EventHandlers\DisposedEventHandler.cs" />
     <Compile Include="EventHandlers\ErrorEventHandler.cs" />
     <Compile Include="EventHandlers\FinishEventHandler.cs" />
     <Compile Include="EventHandlers\LibDeInitEventHandler.cs" />
@@ -62,15 +63,18 @@
     <Compile Include="EventHandlers\PhaseChangedEventHandler.cs" />
     <Compile Include="EventHandlers\ProgressChangedEventHandler.cs" />
     <Compile Include="EventHandlers\WarningEventHandler.cs" />
+    <Compile Include="Factory.cs" />
     <Compile Include="PechkinStatic.cs" />
     <Compile Include="IPechkin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PechkinBindings.cs" />
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="ObjectConfig.cs" />
+    <Compile Include="Proxy.cs" />
     <Compile Include="SimplePechkin.cs" />
     <Compile Include="Util\IntCallback.cs" />
     <Compile Include="Util\StringCallback.cs" />
+    <Compile Include="Util\SynchronizedDispatcherThread.cs" />
     <Compile Include="Util\UTF8Marshaller.cs" />
     <Compile Include="Util\VoidCallback.cs" />
   </ItemGroup>
