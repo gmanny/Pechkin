@@ -91,7 +91,7 @@ namespace Pechkin
 
             byte[] buf = new byte[2048];
 
-            PechkinBindings.wkhtmltopdf_get_global_setting(setting, name, ref buf, buf.Length);
+            PechkinBindings.wkhtmltopdf_get_object_setting(setting, name, ref buf, buf.Length);
 
             int walk = 0;
             while (walk < buf.Length && buf[walk] != 0)
