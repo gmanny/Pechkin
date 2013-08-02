@@ -18,7 +18,7 @@ You can override this setting by calling `SetPrintBackground(true)` on the `Obje
 
 ### Q: How do I build the library from source? ###
 
-**A:** To build the library from the code, you'll need Visual Studio 2010 or 2012 with NuGet package manager [installed](http://docs.nuget.org/docs/start-here/installing-nuget). Then, after checking out the code and opening it in VS you should restore NuGet packages: right click on the solution, select **Manage NuGet Packages...** and in the opened window you should see notification that some packages are missing with the button that restores them.
+**A:** To build the library from the code, you'll need Visual Studio 2010 with SP1 or Visual Studio 2012 with NuGet package manager [installed](http://docs.nuget.org/docs/start-here/installing-nuget). Then, after checking out the code and opening it in VS you should restore NuGet packages: right click on the solution, select **Manage NuGet Packages...** and in the opened window you should see notification that some packages are missing with the button that restores them.
 
 [Alternatively](http://stackoverflow.com/questions/6876732/how-do-i-get-nuget-to-install-update-all-the-packages-in-the-packages-config) you can run ```
 nuget install packages.config
