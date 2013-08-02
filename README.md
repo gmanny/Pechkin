@@ -6,21 +6,19 @@ Pechkin
 FAQ
 ---
 
-### Q: Why does the produced PDF lacks background images and colors? ###
+### Q: Why does the produced PDF lack background images and colors? ###
 
-**A:** By dafault, all backgrounds will be ommited from the document.
+**A:** By default, all backgrounds will be omitted from the document (note: this is similar to how Google Chrome operates when printing to PDF.)
 
 You can override this setting by calling `SetPrintBackground(true)` on the `ObjectConfig` supplied with the HTML document to the `Convert()` method of the converter.
 
-### Q: Do I need to run wkhtmltox installer on the machine for the library to work? ###
+### Q: Do I need to install wkhtmltopdf on the machine for the library to work? ###
 
-**A:** No, the latest version of wkhtmltox DLL is included in the project (and in NuGet package) along with its dependencies, and copied into build folder on project build.
+**A:** No. The latest version of the wkhtmltopdf DLL is included in the project (and in NuGet package) along with its dependencies, and those are all copied into the build output directory when the project is built.
 
-So there's no need to install any prerequisites before using the library on the computer.
+### Q: How do I build the library from source? ###
 
-### Q: How to build library from the code? ###
-
-**A:** To build the library from the code, you'll need Visual Studio 2010 with NuGet package manager [installed](http://docs.nuget.org/docs/start-here/installing-nuget). Then, after checking out the code and opening it in VS you should restore NuGet packages: right click on the solution, select **Manage NuGet Packages...** and in the opened window you should see notification that some packages are missing with the button that restores them.
+**A:** To build the library from the code, you'll need Visual Studio 2010 or 2012 with NuGet package manager [installed](http://docs.nuget.org/docs/start-here/installing-nuget). Then, after checking out the code and opening it in VS you should restore NuGet packages: right click on the solution, select **Manage NuGet Packages...** and in the opened window you should see notification that some packages are missing with the button that restores them.
 
 [Alternatively](http://stackoverflow.com/questions/6876732/how-do-i-get-nuget-to-install-update-all-the-packages-in-the-packages-config) you can run ```
 nuget install packages.config
@@ -28,21 +26,18 @@ nuget install packages.config
 
 And then you should be able to build everything with **Build** > **Build Solution** menu item.
 
-NuGet
------
-
-Pechkin is available in NuGet repo: in most cases you should use [SynchronizedPechkin](https://nuget.org/packages/Pechkin.Synchronized) as it protects multithreaded code from crashing the lib. But for simple usage from one thread, you can use [SimplePechkin](https://nuget.org/packages/Pechkin) directly.
-
 Usage
 -----
 
-Pechkin is both easy to use
+Pechkin is both easy to use....
 
 ```csharp
-byte[] pdfBuf = Factory.Create(new GlobalConfig()).Convert("<html><body><h1>Hello world!</h1></body></html>");
+String html = "<html><body><h1>Hello world!</h1></body></html>";
+
+byte[] pdfBuf = Factory.Create(new GlobalConfig()).Convert(html);
 ```
 
-and functional
+...and functional:
 
 ```csharp
 // create global configuration object
