@@ -79,6 +79,8 @@ namespace Pechkin
             }
         }
 
+        private StringCallback _onWarningDelegate;
+
         /// <summary>
         /// Event handler is called whenever error happens during conversion process.
         /// 
@@ -104,6 +106,8 @@ namespace Pechkin
                 _log.Warn("T:" + Thread.CurrentThread.Name + " Exception in Error event handler", e);
             }
         }
+
+        private StringCallback _onErrorDelegate;
 
         /// <summary>
         /// This event handler signals phase change of the conversion process.
@@ -131,6 +135,8 @@ namespace Pechkin
                 _log.Warn("T:" + Thread.CurrentThread.Name + " Exception in PhaseChange event handler", e);
             }
         }
+
+        private VoidCallback _onPhaseChangedDelegate;
 
         /// <summary>
         /// This event handler signals progress change of the conversion process.
@@ -160,6 +166,8 @@ namespace Pechkin
             }
         }
 
+        private IntCallback _onProgressChangedDelegate;
+
         /// <summary>
         /// This event handler is fired when conversion is finished.
         /// </summary>
@@ -184,6 +192,8 @@ namespace Pechkin
             }
         }
 
+        private IntCallback _onFinishedDelegate;
+
         #endregion
 
         /// <summary>
@@ -192,6 +202,12 @@ namespace Pechkin
         /// <param name="config">global configuration object</param>
         public SimplePechkin(GlobalConfig config)
         {
+            this._onErrorDelegate = new StringCallback(this.OnError);
+            this._onFinishedDelegate = new IntCallback(this.OnFinished);
+            this._onPhaseChangedDelegate = new VoidCallback(this.OnPhaseChanged);
+            this._onProgressChangedDelegate = new IntCallback(this.OnProgressChanged);
+            this._onWarningDelegate = new StringCallback(this.OnWarning);
+
             if (_log.IsTraceEnabled)
                 _log.Trace("T:" + Thread.CurrentThread.Name + " Creating SimplePechkin");
 
@@ -238,11 +254,11 @@ namespace Pechkin
             if (_log.IsTraceEnabled)
                 _log.Trace("T:" + Thread.CurrentThread.Name + " Created converter");
 
-            PechkinStatic.SetErrorCallback(_converter, OnError);
-            PechkinStatic.SetWarningCallback(_converter, OnWarning);
-            PechkinStatic.SetPhaseChangedCallback(_converter, OnPhaseChanged);
-            PechkinStatic.SetProgressChangedCallback(_converter, OnProgressChanged);
-            PechkinStatic.SetFinishedCallback(_converter, OnFinished);
+            PechkinStatic.SetErrorCallback(_converter, _onErrorDelegate);
+            PechkinStatic.SetWarningCallback(_converter, _onWarningDelegate);
+            PechkinStatic.SetPhaseChangedCallback(_converter, _onPhaseChangedDelegate);
+            PechkinStatic.SetProgressChangedCallback(_converter, _onProgressChangedDelegate);
+            PechkinStatic.SetFinishedCallback(_converter, _onFinishedDelegate);
 
             if (_log.IsTraceEnabled)
                 _log.Trace("T:" + Thread.CurrentThread.Name + " Added callbacks to converter");
