@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Pechkin.EventHandlers;
 using Pechkin.Util;
 
@@ -7,7 +6,7 @@ namespace Pechkin
 {
     internal class Proxy : MarshalByRefObject, IPechkin
     {
-        private Delegate invoker = null;
+        private readonly Delegate invoker = null;
 
         private readonly IPechkin remoteInstance;
 

@@ -131,6 +131,8 @@ namespace PechkinTests
             
             GC.Collect();
 
+            c.Dispose();
+
             TestEnd();
         }
     }

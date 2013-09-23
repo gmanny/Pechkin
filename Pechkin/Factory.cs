@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting;
 using Pechkin.Util;
@@ -33,7 +32,7 @@ namespace Pechkin
         /// <summary>
         /// The collection of instantiated, undisposed proxies
         /// </summary>
-        private static readonly HashSet<IPechkin> proxies = new HashSet<IPechkin>();
+        private static readonly List<IPechkin> proxies = new List<IPechkin>();
 
         /// <summary>
         /// The AppDomain used to encapsulate calls to the wkhtmltopdf library
@@ -244,6 +243,7 @@ namespace Pechkin
                 null,
                 new object[] { config },
                 null,
+                null,
                 null);
 
             IPechkin instance = handle.Unwrap() as IPechkin;
@@ -314,7 +314,7 @@ namespace Pechkin
                 {
                     String location = AppDomain.CurrentDomain.GetData("assemblyLocation").ToString();
                     String filename = System.IO.Path.GetFileName(location);
-                    List<String> paths = AppDomain.CurrentDomain.RelativeSearchPath.Split(';').ToList();
+                    List<String> paths = new List<String>(AppDomain.CurrentDomain.RelativeSearchPath.Split(';'));
 
                     foreach (String path in paths.ToArray())
                     {
@@ -375,17 +375,15 @@ namespace Pechkin
 
                 AppDomain.Unload(Factory.operatingDomain);
 
-                Process.GetCurrentProcess()
-                       .Modules
-                       .Cast<ProcessModule>()
-                       .Where(proc => proc.ModuleName == PechkinBindings.LibFilename)
-                       .ToList()
-                       .ForEach(proc =>
-                       {
-                           while (PechkinBindings.FreeLibrary(proc.BaseAddress))
-                           {
-                           }
-                       });
+                foreach (ProcessModule module in Process.GetCurrentProcess().Modules)
+                {
+                    if (module.ModuleName == PechkinBindings.LibFilename)
+                    {
+                        while (PechkinBindings.FreeLibrary(module.BaseAddress))
+                        {
+                        }
+                    }
+                }
 
                 Factory.operatingDomain = null;
             }

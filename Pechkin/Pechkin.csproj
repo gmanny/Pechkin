@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Pechkin</RootNamespace>
     <AssemblyName>Pechkin</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -47,9 +47,6 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=2.1.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
@@ -72,7 +69,9 @@
     <Compile Include="ObjectConfig.cs" />
     <Compile Include="Proxy.cs" />
     <Compile Include="SimplePechkin.cs" />
+    <Compile Include="Tracer.cs" />
     <Compile Include="Util\IntCallback.cs" />
+    <Compile Include="Util\RetroDelegates.cs" />
     <Compile Include="Util\StringCallback.cs" />
     <Compile Include="Util\SynchronizedDispatcherThread.cs" />
     <Compile Include="Util\UTF8Marshaller.cs" />

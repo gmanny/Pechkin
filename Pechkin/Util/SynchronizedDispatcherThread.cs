@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Concurrent;
-//using System.ComponentModel;
+using System.Collections.Generic;
 using System.Threading;
-//using System.Windows.Threading;
-using Common.Logging;
 
 namespace Pechkin.Util
 {
@@ -29,12 +26,10 @@ namespace Pechkin.Util
             public object Result;
         }
 
-        private readonly ILog _log = LogManager.GetCurrentClassLogger();
-
         private readonly Thread _thread;
         private readonly object _sync = new Object(); // we wait on this object
         private bool _shutdown;
-        private readonly ConcurrentQueue<DispatcherTask> _taskQueue = new ConcurrentQueue<DispatcherTask>();
+        private readonly Queue<DispatcherTask> _taskQueue = new Queue<DispatcherTask>();
 
         private static int _threadId;
 
@@ -58,7 +53,6 @@ namespace Pechkin.Util
                 while (true)
                 {
                     DispatcherTask task;
-                    bool gotIt;
 
                     lock (_sync)
                     {
@@ -67,10 +61,11 @@ namespace Pechkin.Util
                             break;
                         }
 
-                        // get task
-                        gotIt = _taskQueue.TryDequeue(out task);
-
-                        if (!gotIt)
+                        try
+                        {
+                            task = _taskQueue.Dequeue();
+                        }
+                        catch (InvalidOperationException)
                         {// if there were no tasks, we wait. Since we've got the lock, noone added anything yet
                             Monitor.Wait(_sync);
 
@@ -90,7 +85,7 @@ namespace Pechkin.Util
             }
             catch (Exception e)
             {
-                _log.Fatal("Exception in SynchronizedDispatcherThread \"" + Thread.CurrentThread.Name + "\"", e);
+                Tracer.Critical("Exception in SynchronizedDispatcherThread \"" + Thread.CurrentThread.Name + "\"", e);
             }
         }
 

@@ -25,7 +25,7 @@ namespace Pechkin.Util
             Marshal.Copy(strbuf, 0, buffer, strbuf.Length);
 
             // write the terminating null
-            Marshal.WriteByte(buffer + strbuf.Length, 0);
+            Marshal.WriteByte(new IntPtr(buffer.ToInt64() + (long)strbuf.Length), 0);
             return buffer;
         }
 

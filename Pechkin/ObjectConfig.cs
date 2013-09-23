@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Text;
 using System.Threading;
-using Common.Logging;
 
 namespace Pechkin
 {
@@ -368,7 +367,7 @@ namespace Pechkin
 
             _createToc = createToc ? "true" : "false";
 
-            LogManager.GetCurrentClassLogger().Warn("T:" + Thread.CurrentThread.Name + " Table of content generation is turned on. The result may be not as expected");
+            Tracer.Warn("T:" + Thread.CurrentThread.Name + " Table of content generation is turned on. The result may be not as expected");
 
             return this;
         }
@@ -678,11 +677,7 @@ namespace Pechkin
 
         internal void SetUpObjectConfig(IntPtr config)
         {
-            ILog log = LogManager.GetCurrentClassLogger();
-            if (log.IsTraceEnabled)
-            {
-                log.Trace("T:" + Thread.CurrentThread.Name + " Setting up object config (many wkhtmltopdf_set_object_setting)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Setting up object config (many wkhtmltopdf_set_object_setting)");
 
             if (_tocUseDottedLines != null)
             {

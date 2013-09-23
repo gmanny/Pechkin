@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using Common.Logging;
 using Pechkin.Util;
 
 namespace Pechkin
@@ -17,44 +15,30 @@ namespace Pechkin
     [Serializable]
     internal static class PechkinStatic
     {
-        private static readonly ILog Log = LogManager.GetCurrentClassLogger();
-
         public static IntPtr CreateGlobalSetting()
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Creating global settings (wkhtmltopdf_create_global_settings)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Creating global settings (wkhtmltopdf_create_global_settings)");
 
             return PechkinBindings.wkhtmltopdf_create_global_settings();
         }
 
         public static IntPtr CreateObjectSettings()
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Creating object settings (wkhtmltopdf_create_object_settings)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Creating object settings (wkhtmltopdf_create_object_settings)");
 
             return PechkinBindings.wkhtmltopdf_create_object_settings();
         }
 
         public static int SetGlobalSetting(IntPtr setting, string name, string value)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting global setting (wkhtmltopdf_set_global_setting)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Setting global setting (wkhtmltopdf_set_global_setting)");
 
             return PechkinBindings.wkhtmltopdf_set_global_setting(setting, name, value);
         }
 
         public static string GetGlobalSetting(IntPtr setting, string name)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Getting global setting (wkhtmltopdf_get_global_setting)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Getting global setting (wkhtmltopdf_get_global_setting)");
 
             byte[] buf = new byte[2048];
 
@@ -74,20 +58,14 @@ namespace Pechkin
 
         public static int SetObjectSetting(IntPtr setting, string name, string value)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting object setting (wkhtmltopdf_set_object_setting)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Setting object setting (wkhtmltopdf_set_object_setting)");
 
             return PechkinBindings.wkhtmltopdf_set_object_setting(setting, name, value);
         }
 
         public static string GetObjectSetting(IntPtr setting, string name)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Getting object setting (wkhtmltopdf_get_object_setting)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Getting object setting (wkhtmltopdf_get_object_setting)");
 
             byte[] buf = new byte[2048];
 
@@ -107,160 +85,112 @@ namespace Pechkin
 
         public static IntPtr CreateConverter(IntPtr globalSettings)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Creating converter (wkhtmltopdf_create_converter)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Creating converter (wkhtmltopdf_create_converter)");
 
             return PechkinBindings.wkhtmltopdf_create_converter(globalSettings);
         }
 
         public static void DestroyConverter(IntPtr converter)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Destroying converter (wkhtmltopdf_destroy_converter)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Destroying converter (wkhtmltopdf_destroy_converter)");
 
             PechkinBindings.wkhtmltopdf_destroy_converter(converter);
         }
 
         public static void SetWarningCallback(IntPtr converter, StringCallback callback)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting warning callback (wkhtmltopdf_set_warning_callback)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Setting warning callback (wkhtmltopdf_set_warning_callback)");
             
             PechkinBindings.wkhtmltopdf_set_warning_callback(converter, callback);
         }
 
         public static void SetErrorCallback(IntPtr converter, StringCallback callback)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting error callback (wkhtmltopdf_set_error_callback)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Setting error callback (wkhtmltopdf_set_error_callback)");
             
             PechkinBindings.wkhtmltopdf_set_error_callback(converter, callback);
         }
 
         public static void SetFinishedCallback(IntPtr converter, IntCallback callback)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting finished callback (wkhtmltopdf_set_finished_callback)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Setting finished callback (wkhtmltopdf_set_finished_callback)");
 
             PechkinBindings.wkhtmltopdf_set_finished_callback(converter, callback);
         }
 
         public static void SetPhaseChangedCallback(IntPtr converter, VoidCallback callback)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting phase change callback (wkhtmltopdf_set_phase_changed_callback)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Setting phase change callback (wkhtmltopdf_set_phase_changed_callback)");
 
             PechkinBindings.wkhtmltopdf_set_phase_changed_callback(converter, callback);
         }
 
         public static void SetProgressChangedCallback(IntPtr converter, IntCallback callback)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Setting progress change callback (wkhtmltopdf_set_progress_changed_callback)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Setting progress change callback (wkhtmltopdf_set_progress_changed_callback)");
 
             PechkinBindings.wkhtmltopdf_set_progress_changed_callback(converter, callback);
         }
 
         public static bool PerformConversion(IntPtr converter)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Starting conversion (wkhtmltopdf_convert)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Starting conversion (wkhtmltopdf_convert)");
 
             return PechkinBindings.wkhtmltopdf_convert(converter) != 0;
         }
 
         public static void AddObject(IntPtr converter, IntPtr objectConfig, string html)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Adding string object (wkhtmltopdf_add_object)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Adding string object (wkhtmltopdf_add_object)");
 
             PechkinBindings.wkhtmltopdf_add_object(converter, objectConfig, html);
         }
 
         public static void AddObject(IntPtr converter, IntPtr objectConfig, byte[] html)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Adding byte[] object (wkhtmltopdf_add_object)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Adding byte[] object (wkhtmltopdf_add_object)");
 
             PechkinBindings.wkhtmltopdf_add_object(converter, objectConfig, html);
         }
 
         public static int GetPhaseNumber(IntPtr converter)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting current phase (wkhtmltopdf_current_phase)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Requesting current phase (wkhtmltopdf_current_phase)");
 
             return PechkinBindings.wkhtmltopdf_current_phase(converter);
         }
 
         public static int GetPhaseCount(IntPtr converter)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting phase count (wkhtmltopdf_phase_count)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Requesting phase count (wkhtmltopdf_phase_count)");
 
             return PechkinBindings.wkhtmltopdf_phase_count(converter);
         }
 
         public static string GetPhaseDescription(IntPtr converter, int phase)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting phase description (wkhtmltopdf_phase_description)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Requesting phase description (wkhtmltopdf_phase_description)");
 
             return Marshal.PtrToStringAnsi(PechkinBindings.wkhtmltopdf_phase_description(converter, phase));
         }
 
         public static string GetProgressDescription(IntPtr converter)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting progress string (wkhtmltopdf_progress_string)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Requesting progress string (wkhtmltopdf_progress_string)");
 
             return Marshal.PtrToStringAnsi(PechkinBindings.wkhtmltopdf_progress_string(converter));
         }
 
         public static int GetHttpErrorCode(IntPtr converter)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting http error code (wkhtmltopdf_http_error_code)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Requesting http error code (wkhtmltopdf_http_error_code)");
 
             return PechkinBindings.wkhtmltopdf_http_error_code(converter);
         }
 
         public static byte[] GetConverterResult(IntPtr converter)
         {
-            if (Log.IsTraceEnabled)
-            {
-                Log.Trace("T:" + Thread.CurrentThread.Name + " Requesting converter result (wkhtmltopdf_get_output)");
-            }
+            Tracer.Trace("T:" + Thread.CurrentThread.Name + " Requesting converter result (wkhtmltopdf_get_output)");
 
             IntPtr tmp;
             var len = PechkinBindings.wkhtmltopdf_get_output(converter, out tmp);
