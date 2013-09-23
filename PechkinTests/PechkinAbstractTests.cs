@@ -10,6 +10,7 @@ namespace PechkinTests
     public abstract class PechkinAbstractTests<TConvType> where TConvType : IPechkin
     {
         protected abstract TConvType ProduceTestObject(GlobalConfig cfg);
+
         protected abstract void TestEnd();
 
         public static string GetResourceString(string name)
@@ -29,10 +30,12 @@ namespace PechkinTests
         {
             string html = GetResourceString("PechkinTests.Resources.page.html");
 
-            TConvType c = ProduceTestObject(new GlobalConfig());
-            byte[] ret = c.Convert(html);
+            using (IPechkin c = ProduceTestObject(new GlobalConfig()))
+            {
+                byte[] ret = c.Convert(html);
 
-            Assert.NotNull(ret);
+                Assert.NotNull(ret);
+            }
 
             TestEnd();
         }
@@ -42,21 +45,23 @@ namespace PechkinTests
         {
             string html = GetResourceString("PechkinTests.Resources.page.html");
 
-            TConvType c = ProduceTestObject(new GlobalConfig());
-            byte[] ret = c.Convert(html);
-
-            Assert.NotNull(ret);
-
-            byte[] right = Encoding.UTF8.GetBytes("%PDF");
-
-            Assert.True(right.Length <= ret.Length);
-
-            byte[] test = new byte[right.Length];
-            Array.Copy(ret, 0, test, 0, right.Length);
-
-            for (int i = 0; i < right.Length; i++)
+            using (IPechkin c = ProduceTestObject(new GlobalConfig()))
             {
-                Assert.Equal(right[i], test[i]);
+                byte[] ret = c.Convert(html);
+
+                Assert.NotNull(ret);
+
+                byte[] right = Encoding.UTF8.GetBytes("%PDF");
+
+                Assert.True(right.Length <= ret.Length);
+
+                byte[] test = new byte[right.Length];
+                Array.Copy(ret, 0, test, 0, right.Length);
+
+                for (int i = 0; i < right.Length; i++)
+                {
+                    Assert.Equal(right[i], test[i]);
+                }
             }
 
             TestEnd();
@@ -75,10 +80,12 @@ namespace PechkinTests
 
             sw.Close();
 
-            TConvType c = ProduceTestObject(new GlobalConfig());
-            byte[] ret = c.Convert(new ObjectConfig().SetPageUri(fn));
+            using (IPechkin c = ProduceTestObject(new GlobalConfig()))
+            {
+                byte[] ret = c.Convert(new ObjectConfig().SetPageUri(fn));
 
-            Assert.NotNull(ret);
+                Assert.NotNull(ret);
+            }
 
             File.Delete(fn);
 
@@ -90,14 +97,16 @@ namespace PechkinTests
         {
             string html = GetResourceString("PechkinTests.Resources.page.html");
 
-            TConvType c = ProduceTestObject(new GlobalConfig());
-            byte[] ret = c.Convert(html);
+            using (IPechkin c = ProduceTestObject(new GlobalConfig()))
+            {
+                byte[] ret = c.Convert(html);
 
-            Assert.NotNull(ret);
+                Assert.NotNull(ret);
 
-            ret = c.Convert(html);
+                ret = c.Convert(html);
 
-            Assert.NotNull(ret);
+                Assert.NotNull(ret);
+            }
 
             TestEnd();
         }
@@ -107,10 +116,13 @@ namespace PechkinTests
         {
             string html = GetResourceString("PechkinTests.Resources.page.html");
 
-            TConvType c = ProduceTestObject(new GlobalConfig());
+            IPechkin c = ProduceTestObject(new GlobalConfig());
+
             byte[] ret = c.Convert(html);
 
             Assert.NotNull(ret);
+
+            c.Dispose();
 
             c = ProduceTestObject(new GlobalConfig());
             ret = c.Convert(html);
@@ -118,6 +130,8 @@ namespace PechkinTests
             Assert.NotNull(ret);
             
             GC.Collect();
+
+            c.Dispose();
 
             TestEnd();
         }

@@ -4,7 +4,6 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Windows.Forms;
 using Pechkin;
-using Pechkin.Synchronized;
 
 namespace Html2PdfTestApp
 {
@@ -17,18 +16,16 @@ namespace Html2PdfTestApp
 
         private void OnLoad(object sender, EventArgs e)
         {
-            Text += " v" + PechkinStatic.Version;
+            Text += " v" + Factory.Version;
         }
 
         private void OnConvertButtonClick(object sender, EventArgs e)
         {
             PerformanceCollector pc = new PerformanceCollector("PDF creation");
 
-            //PechkinStatic.InitLib(false);
-
             pc.FinishAction("Library initialized");
 
-            SynchronizedPechkin sc = new SynchronizedPechkin(new GlobalConfig().SetMargins(new Margins(300, 100, 150, 100))
+            IPechkin sc = Factory.Create(new GlobalConfig().SetMargins(new Margins(300, 100, 150, 100))
                 .SetDocumentTitle("Ololo").SetCopyCount(1).SetImageQuality(50)
                 .SetLosslessCompression(true).SetMaxImageDpi(20).SetOutlineGeneration(true).SetOutputDpi(1200).SetPaperOrientation(true)
                 .SetPaperSize(PaperKind.Letter));
@@ -99,7 +96,7 @@ namespace Html2PdfTestApp
             Text = text;
         }
 
-        private void OnScProgress(SimplePechkin converter, int progress, string progressdescription)
+        private void OnScProgress(IPechkin converter, int progress, string progressdescription)
         {
             if (InvokeRequired)
             {
@@ -112,7 +109,7 @@ namespace Html2PdfTestApp
             }
         }
 
-        private void OnScPhase(SimplePechkin converter, int phasenumber, string phasedescription)
+        private void OnScPhase(IPechkin converter, int phasenumber, string phasedescription)
         {
             if (InvokeRequired)
             {
@@ -124,7 +121,7 @@ namespace Html2PdfTestApp
             }
         }
 
-        private void OnScFinished(SimplePechkin converter, bool success)
+        private void OnScFinished(IPechkin converter, bool success)
         {
             if (InvokeRequired)
             {
@@ -136,7 +133,7 @@ namespace Html2PdfTestApp
             }
         }
 
-        private void OnScWarning(SimplePechkin converter, string warningtext)
+        private void OnScWarning(IPechkin converter, string warningtext)
         {
             if (InvokeRequired)
             {
@@ -148,7 +145,7 @@ namespace Html2PdfTestApp
             }
         }
 
-        private void OnScBegin(SimplePechkin converter, int expectedphasecount)
+        private void OnScBegin(IPechkin converter, int expectedphasecount)
         {
             if (InvokeRequired)
             {
@@ -160,7 +157,7 @@ namespace Html2PdfTestApp
             }
         }
 
-        private void OnScError(SimplePechkin converter, string errorText)
+        private void OnScError(IPechkin converter, string errorText)
         {
             if (InvokeRequired)
             {

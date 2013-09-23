@@ -71,10 +71,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PechkinSynchronized\PechkinSynchronized.csproj">
-      <Project>{5D9C16E1-A2C2-433B-AE55-1477EBEDA880}</Project>
-      <Name>PechkinSynchronized</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Pechkin\Pechkin.csproj">
       <Project>{023DF833-B252-48B3-B6AF-DBBB13E39B13}</Project>
       <Name>Pechkin</Name>

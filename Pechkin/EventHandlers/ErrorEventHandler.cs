@@ -1,4 +1,4 @@
 namespace Pechkin.EventHandlers
 {
-    public delegate void ErrorEventHandler(SimplePechkin converter, string errorText);
+    public delegate void ErrorEventHandler(IPechkin converter, string errorText);
 }
