@@ -8,7 +8,7 @@ FAQ
 
 ### Q: Why produced PDF lacks background images and colors? ###
 
-**A:** By dafault, all backgrounds will be ommited from the document.
+**A:** By default, all backgrounds will be ommited from the document.
 
 You can override this setting by calling `SetPrintBackground(true)` on the `ObjectConfig` supplied with the HTML document to the `Convert()` method of the converter.
 
