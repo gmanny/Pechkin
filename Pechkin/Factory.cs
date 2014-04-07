@@ -333,7 +333,7 @@ namespace Pechkin
             {
                 Factory.operatingDomain.Load(Assembly.GetExecutingAssembly().FullName);
             }
-
+            
             Func<object> del = () =>
             {
                 Factory.operatingDomain.SetData("useX11Graphics", Factory.useX11Graphics);
@@ -377,7 +377,7 @@ namespace Pechkin
 
                 foreach (ProcessModule module in Process.GetCurrentProcess().Modules)
                 {
-                    if (module.ModuleName == PechkinBindings.LibFilename)
+                    if (module.ModuleName == "wkhtmltox0.dll")
                     {
                         while (PechkinBindings.FreeLibrary(module.BaseAddress))
                         {

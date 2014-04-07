@@ -1,16 +1,36 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using Pechkin.Util;
+using Pechkin.Properties;
 
 namespace Pechkin
 {
     [Serializable]
     internal static class PechkinBindings
     {
-        public static String LibFilename = "wkhtmltox0.dll";
+        static PechkinBindings()
+        {
+            var exePath = AppDomain.CurrentDomain.RelativeSearchPath;
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Utf8Marshaler))] String filename);
+            var assemblyName = Path.Combine(exePath, "libeay32.dll");
+            File.WriteAllBytes(assemblyName, Resources.libeay32);
+            assemblyName = Path.Combine(exePath, "libgcc_s_dw2-1.dll");
+            File.WriteAllBytes(assemblyName, Resources.libgcc_s_dw2_1);
+            assemblyName = Path.Combine(exePath, "mingwm10.dll");
+            File.WriteAllBytes(assemblyName, Resources.mingwm10);
+            assemblyName = Path.Combine(exePath, "ssleay32.dll");
+            File.WriteAllBytes(assemblyName, Resources.ssleay32);
+            assemblyName = Path.Combine(exePath, "wkhtmltox0.dll");
+            File.WriteAllBytes(assemblyName, Resources.wkhtmltox0);
+            
+            var ptr = LoadLibrary(assemblyName);
+            ptr.ToInt32();
+        }
+
+        [DllImport("kernel32", SetLastError = true)]
+        public static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Utf8Marshaler))]
+                                                String filename);
 
         [DllImport("kernel32", SetLastError = true)]
         public static extern bool FreeLibrary(IntPtr hModule);
@@ -117,7 +137,6 @@ namespace Pechkin
         public static extern int wkhtmltopdf_http_error_code(IntPtr converter);
 
         [DllImport("wkhtmltox0.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        //public static extern long wkhtmltopdf_get_output(IntPtr converter, out IntPtr result);
         public static extern int wkhtmltopdf_get_output(IntPtr converter, out IntPtr data);
     }
 }
