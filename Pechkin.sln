@@ -5,13 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pechkin", "Pechkin\Pechkin.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PechkinTestApp", "PechkinTestApp\PechkinTestApp.csproj", "{35E72E2C-DE58-4ED7-9B47-5EF13860AF42}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{87D31921-8B50-4AB1-BD3D-0EC7D3A60FEA}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\nuget.exe = .nuget\nuget.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PechkinTests", "PechkinTests\PechkinTests.csproj", "{D58769FA-E008-4016-A81C-A85C606B3691}"
 EndProject
 Global

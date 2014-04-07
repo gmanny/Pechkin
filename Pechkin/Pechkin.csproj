@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Pechkin</RootNamespace>
-    <AssemblyName>Pechkin</AssemblyName>
+    <AssemblyName>TuesPechkin</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -78,24 +78,11 @@
     <Compile Include="Util\VoidCallback.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="libeay32.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="libgcc_s_dw2-1.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="mingwm10.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ssleay32.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="wkhtmltox0.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="Assemblies\libeay32.dll" />
+    <None Include="Assemblies\libgcc_s_dw2-1.dll" />
+    <None Include="Assemblies\mingwm10.dll" />
+    <None Include="Assemblies\ssleay32.dll" />
+    <None Include="Assemblies\wkhtmltox0.dll" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -107,4 +94,18 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="BeforeBuild">
+    <CreateItem Include="$(SolutionDir)\Pechkin\Assemblies\*.dll">
+      <Output TaskParameter="Include" ItemName="PechkinDependencies" />
+    </CreateItem>
+    <Message Text="Copying unmanaged dependencies for Pechkin" />
+    <Copy SourceFiles="@(PechkinDependencies)" DestinationFolder="$(TargetDir)" />
+  </Target>
+  <Target Name="Clean">
+    <CreateItem Include="$(TargetDir)\*">
+      <Output TaskParameter="Include" ItemName="Everything" />
+    </CreateItem>
+    <Message Text="Cleaning everything in the project" />
+    <Delete Files="@(Everything)" />
+  </Target>
 </Project>
