@@ -1,7 +1,7 @@
 Pechkin
 =======
 
-.NET Wrapper for [WkHtmlToPdf](http://github.com/antialize/wkhtmltopdf) DLL, library that uses Webkit engine to convert HTML pages to PDF.
+.NET Wrapper for [WkHtmlToPdf](http://github.com/antialize/wkhtmltopdf) DLL, a library that uses the Webkit engine to convert HTML pages to PDF. This fork supports .NET 2.0 and up, but unfortunately it will only run in 32-bit application pools as wkhtmltopdf does not come in a 64-bit flavor at this time.
 
 FAQ
 ---
