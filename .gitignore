@@ -3,9 +3,10 @@ bin
 obj
 _ReSharper.*
 .svn
-.nupkg
 *.user
 *.suo
 
 # mstest test results
 TestResults
+*.nupkg
+*.nuspec
