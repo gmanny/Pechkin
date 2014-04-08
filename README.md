@@ -3,11 +3,11 @@ Pechkin
 
 .NET Wrapper for [WkHtmlToPdf](http://github.com/antialize/wkhtmltopdf) DLL, a library that uses the Webkit engine to convert HTML pages to PDF. This fork supports .NET 2.0 and up, but unfortunately it will only run in 32-bit application pools as wkhtmltopdf does not come in a 64-bit flavor at this time.
 
-New in 0.9.1
+New in 0.9.2.1
 ------
-The five unmanaged DLLs that Pechkin depends upon have been packaged as *embedded resources* so you don't have to worry about messing around with pre- or post-build events to copy the files wherever they go in your solution. When the library is first accessed in the application lifetime, it will copy the embedded resources to the working directory (i.e., ```/bin```.)
+The five unmanaged DLLs that Pechkin depends upon have been packaged as *embedded resources* so you don't have to worry about messing around with pre- or post-build events to copy the files wherever they go in your solution. When the library is first accessed in the application lifetime, it will copy the embedded resources to a temporary directory (if they do not exist there already) and invoke WinApi to load them up.
 
-TuesPechkin 0.9.1 is also now available as a *NuGet package* (see: https://www.nuget.org/packages/TuesPechkin/) for your convenience.
+TuesPechkin 0.9.2.1 is also now available as a *NuGet package* (see: https://www.nuget.org/packages/TuesPechkin/) for your convenience.
 
 If you experience any problems using TuesPechkin, please be sure to create the issues on TuesPechkin and not the original Pechkin branch. I am so grateful to gmanny for his contribution but at this point I see the codebase evolving further away from the original and I would like to continue to support it for you (and myself! ;))
 
