@@ -63,9 +63,9 @@ namespace Pechkin.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] libeay32 {
+        internal static byte[] wkhtmltox_32 {
             get {
-                object obj = ResourceManager.GetObject("libeay32", resourceCulture);
+                object obj = ResourceManager.GetObject("wkhtmltox_32", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -73,39 +73,9 @@ namespace Pechkin.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] libgcc_s_dw2_1 {
+        internal static byte[] wkhtmltox_64 {
             get {
-                object obj = ResourceManager.GetObject("libgcc_s_dw2_1", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] mingwm10 {
-            get {
-                object obj = ResourceManager.GetObject("mingwm10", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] ssleay32 {
-            get {
-                object obj = ResourceManager.GetObject("ssleay32", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] wkhtmltox0 {
-            get {
-                object obj = ResourceManager.GetObject("wkhtmltox0", resourceCulture);
+                object obj = ResourceManager.GetObject("wkhtmltox_64", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -377,7 +377,7 @@ namespace Pechkin
 
                 foreach (ProcessModule module in Process.GetCurrentProcess().Modules)
                 {
-                    if (module.ModuleName == "wkhtmltox0.dll")
+                    if (module.ModuleName == "wkhtmltox.dll")
                     {
                         while (WinApiHelper.FreeLibrary(module.BaseAddress))
                         {
