@@ -11,21 +11,44 @@ namespace Pechkin
     {
         static PechkinBindings()
         {
-            var exePath = AppDomain.CurrentDomain.RelativeSearchPath;
+            var exePath = Path.GetFullPath(Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                AppDomain.CurrentDomain.RelativeSearchPath));
 
             var assemblyName = Path.Combine(exePath, "libeay32.dll");
-            File.WriteAllBytes(assemblyName, Resources.libeay32);
+
+            if (!File.Exists(assemblyName))
+            {
+                File.WriteAllBytes(assemblyName, Resources.libeay32);
+            }
+
             assemblyName = Path.Combine(exePath, "libgcc_s_dw2-1.dll");
-            File.WriteAllBytes(assemblyName, Resources.libgcc_s_dw2_1);
+
+            if (!File.Exists(assemblyName))
+            {
+                File.WriteAllBytes(assemblyName, Resources.libgcc_s_dw2_1);
+            }
+
             assemblyName = Path.Combine(exePath, "mingwm10.dll");
-            File.WriteAllBytes(assemblyName, Resources.mingwm10);
+
+            if (!File.Exists(assemblyName))
+            {
+                File.WriteAllBytes(assemblyName, Resources.mingwm10);
+            }
+
             assemblyName = Path.Combine(exePath, "ssleay32.dll");
-            File.WriteAllBytes(assemblyName, Resources.ssleay32);
+
+            if (!File.Exists(assemblyName))
+            {
+                File.WriteAllBytes(assemblyName, Resources.ssleay32);
+            }
+
             assemblyName = Path.Combine(exePath, "wkhtmltox0.dll");
-            File.WriteAllBytes(assemblyName, Resources.wkhtmltox0);
-            
-            var ptr = LoadLibrary(assemblyName);
-            ptr.ToInt32();
+
+            if (!File.Exists(assemblyName))
+            {
+                File.WriteAllBytes(assemblyName, Resources.wkhtmltox0);
+            }
         }
 
         [DllImport("kernel32", SetLastError = true)]
