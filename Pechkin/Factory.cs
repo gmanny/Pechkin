@@ -379,7 +379,7 @@ namespace Pechkin
                 {
                     if (module.ModuleName == "wkhtmltox0.dll")
                     {
-                        while (PechkinBindings.FreeLibrary(module.BaseAddress))
+                        while (WinApiHelper.FreeLibrary(module.BaseAddress))
                         {
                         }
                     }

@@ -81,6 +81,7 @@
     <Compile Include="Util\SynchronizedDispatcherThread.cs" />
     <Compile Include="Util\UTF8Marshaller.cs" />
     <Compile Include="Util\VoidCallback.cs" />
+    <Compile Include="WinApiHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assemblies\libeay32.dll" />
