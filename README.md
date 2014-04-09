@@ -25,17 +25,11 @@ You can override this setting by calling `SetPrintBackground(true)` on the `Obje
 
 ### Q: Do I need to install wkhtmltopdf on the machine for the library to work? ###
 
-**A:** No. The latest version of the wkhtmltopdf DLL is included in the project (and in NuGet package) along with its dependencies, and those are all copied into the build output directory when the project is built.
+**A:** No. Version 0.12 of wkhtmltox.dll is embedded into the package and unpacked on library initialization.
 
-### Q: How do I build the library from source? ###
+### Q: Why is my website or application locking up when using TuesPechkin?
 
-**A:** To build the library from the code, you'll need Visual Studio 2010 with SP1 or Visual Studio 2012 with NuGet package manager [installed](http://docs.nuget.org/docs/start-here/installing-nuget). Then, after checking out the code and opening it in VS you should restore NuGet packages: right click on the solution, select **Manage NuGet Packages...** and in the opened window you should see notification that some packages are missing with the button that restores them.
-
-[Alternatively](http://stackoverflow.com/questions/6876732/how-do-i-get-nuget-to-install-update-all-the-packages-in-the-packages-config) you can run ```
-nuget install packages.config
-``` for every project in the solution. (Two test projects with xunit, others supporting Common.Logging.)
-
-And then you should be able to build everything with **Build** > **Build Solution** menu item.
+**A:** If you do not dispose of the IPechkin object properly, the converter will not be properly 'cleaned up' and so the next time you create and run a converter, the wkhtmltox.dll library will hang up. Be sure to dispose of your IPechkin objects every time!
 
 Usage
 -----
@@ -45,7 +39,10 @@ Pechkin is both easy to use....
 ```csharp
 String html = "<html><body><h1>Hello world!</h1></body></html>";
 
-byte[] pdfBuf = Factory.Create(new GlobalConfig()).Convert(html);
+using (var converter = Factory.Create(new GlobalConfig()))
+{
+    byte[] pdfBuf = converter.Convert(html);
+}
 ```
 
 ...and functional:
@@ -83,6 +80,9 @@ oc.SetCreateExternalLinks(false)
 
 // convert document
 byte[] pdfBuf = pechkin.Convert(oc);
+
+// Be sure to dispose! Preferably with a using statement.
+pechkin.Dispose();
 ```
 
 License
