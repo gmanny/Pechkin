@@ -67,7 +67,7 @@ gc.SetMargins(new Margins(300, 100, 150, 100))
 //... etc
 
 // create converter
-IPechkin pechkin = new SynchronizedPechkin(gc);
+IPechkin pechkin = new SimplePechkin(gc);
 
 // subscribe to events
 pechkin.Begin += OnBegin;
