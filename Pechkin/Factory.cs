@@ -40,12 +40,6 @@ namespace Pechkin
         private static AppDomain operatingDomain = null;
 
         /// <summary>
-        /// In case we are running in .NET debug, the actual location of the 
-        /// Pechkin assembly (not in the .NET temp folders)
-        /// </summary>
-        private static String realAssemblyLocation = null;
-
-        /// <summary>
         /// A thread used to invoke all calls to the wkhtmltopdf library
         /// so that multi-threaded applications can use Pechkin
         /// </summary>
@@ -232,11 +226,9 @@ namespace Pechkin
                 Factory.SetupAppDomain();
             }
 
-            String location = Factory.realAssemblyLocation ?? Assembly.GetExecutingAssembly().Location;
-
             ObjectHandle handle = Activator.CreateInstanceFrom(
                 Factory.operatingDomain,
-                location,
+                Assembly.GetExecutingAssembly().Location,
                 typeof(SimplePechkin).FullName,
                 false,
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
@@ -283,57 +275,10 @@ namespace Pechkin
                 Factory.synchronizer = new SynchronizedDispatcherThread();
             }
 
-            String binPath = String.Empty;
+            var dirName = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var setup = new AppDomainSetup() { ApplicationBase = dirName };
+            Factory.operatingDomain = AppDomain.CreateDomain("pechkin_internal_domain", null, setup);
 
-            if (!String.IsNullOrEmpty(AppDomain.CurrentDomain.RelativeSearchPath))
-            {
-                String[] paths = AppDomain.CurrentDomain.RelativeSearchPath.Split(';');
-
-                for (var i = 0; i < paths.Length; i++)
-                {
-                    paths[i].Remove(0, AppDomain.CurrentDomain.BaseDirectory.Length);
-                }
-
-                binPath = String.Join(";", paths);
-            }
-
-            Factory.operatingDomain = AppDomain.CreateDomain("pechkin_internal_domain", null,
-                new AppDomainSetup
-                {
-                    ApplicationBase = AppDomain.CurrentDomain.BaseDirectory,
-                    // Sometimes, like in a web app, your bin folder is not the same
-                    // as the base dir.
-                    PrivateBinPath = binPath
-                });
-
-            if (binPath != String.Empty)
-            {
-                Factory.operatingDomain.SetData("assemblyLocation", Assembly.GetExecutingAssembly().Location);
-
-                Factory.operatingDomain.DoCallBack(() =>
-                {
-                    String location = AppDomain.CurrentDomain.GetData("assemblyLocation").ToString();
-                    String filename = System.IO.Path.GetFileName(location);
-                    List<String> paths = new List<String>(AppDomain.CurrentDomain.RelativeSearchPath.Split(';'));
-
-                    foreach (String path in paths.ToArray())
-                    {
-                        paths.Remove(path);
-                        paths.AddRange(System.IO.Directory.GetFiles(path, filename));
-                    }
-
-                    Assembly.LoadFrom(paths[0]);
-
-                    AppDomain.CurrentDomain.SetData("assemblyLocation", paths[0]);
-                });
-
-                Factory.realAssemblyLocation = Factory.operatingDomain.GetData("assemblyLocation").ToString();
-            }
-            else
-            {
-                Factory.operatingDomain.Load(Assembly.GetExecutingAssembly().FullName);
-            }
-            
             Func<object> del = () =>
             {
                 Factory.operatingDomain.SetData("useX11Graphics", Factory.useX11Graphics);
