@@ -11,6 +11,7 @@ namespace Pechkin
     /// 
     /// It uses fluid notation to change its fields.
     /// </summary>
+    [Serializable]
     public class GlobalConfig
     {
         private string _paperSize = "A4";
@@ -332,99 +333,99 @@ namespace Pechkin
 
             if (_paperSize != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "size.paperSize", _paperSize);
+                PechkinStatic.SetGlobalSetting(config, "size.paperSize", _paperSize);
             }
             if (_paperWidth != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "size.width", _paperWidth);
+                PechkinStatic.SetGlobalSetting(config, "size.width", _paperWidth);
             }
             if (_paperHeight != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "size.height", _paperHeight);
+                PechkinStatic.SetGlobalSetting(config, "size.height", _paperHeight);
             }
             if (_paperOrientation != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "orientation", _paperOrientation);
+                PechkinStatic.SetGlobalSetting(config, "orientation", _paperOrientation);
             }
             if (_colorMode != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "colorMode", _colorMode);
+                PechkinStatic.SetGlobalSetting(config, "colorMode", _colorMode);
             }
             if (_resolution != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "resolution", _resolution);
+                PechkinStatic.SetGlobalSetting(config, "resolution", _resolution);
             }
             if (_dpi != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "dpi", _dpi);
+                PechkinStatic.SetGlobalSetting(config, "dpi", _dpi);
             }
             if (_pageOffset != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "pageOffset", _pageOffset);
+                PechkinStatic.SetGlobalSetting(config, "pageOffset", _pageOffset);
             }
             if (_copies != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "copies", _copies);
+                PechkinStatic.SetGlobalSetting(config, "copies", _copies);
             }
             if (_collate != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "collate", _collate);
+                PechkinStatic.SetGlobalSetting(config, "collate", _collate);
             }
             if (_outline != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "outline", _outline);
+                PechkinStatic.SetGlobalSetting(config, "outline", _outline);
             }
             if (_outlineDepth != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "outlineDepth", _outlineDepth);
+                PechkinStatic.SetGlobalSetting(config, "outlineDepth", _outlineDepth);
             }
             if (_dumpOutline != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "dumpOutline", _dumpOutline);
+                PechkinStatic.SetGlobalSetting(config, "dumpOutline", _dumpOutline);
             }
             if (_output != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "out", _output);
+                PechkinStatic.SetGlobalSetting(config, "out", _output);
             }
             if (_documentTitle != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "documentTitle", _documentTitle);
+                PechkinStatic.SetGlobalSetting(config, "documentTitle", _documentTitle);
             }
             if (_useCompression != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "useCompression", _useCompression);
+                PechkinStatic.SetGlobalSetting(config, "useCompression", _useCompression);
             }
             if (_marginTop != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "margin.top", _marginTop);
+                PechkinStatic.SetGlobalSetting(config, "margin.top", _marginTop);
             }
             if (_marginRight != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "margin.right", _marginRight);
+                PechkinStatic.SetGlobalSetting(config, "margin.right", _marginRight);
             }
             if (_marginBottom != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "margin.bottom", _marginBottom);
+                PechkinStatic.SetGlobalSetting(config, "margin.bottom", _marginBottom);
             }
             if (_marginLeft != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "margin.left", _marginLeft);
+                PechkinStatic.SetGlobalSetting(config, "margin.left", _marginLeft);
             }
             if (_outputFormat != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "outputFormat", _outputFormat);
+                PechkinStatic.SetGlobalSetting(config, "outputFormat", _outputFormat);
             }
             if (_imageDpi != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "imageDPI", _imageDpi);
+                PechkinStatic.SetGlobalSetting(config, "imageDPI", _imageDpi);
             }
             if (_imageQuality != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "imageQuality", _imageQuality);
+                PechkinStatic.SetGlobalSetting(config, "imageQuality", _imageQuality);
             }
             if (_cookieJar != null)
             {
-                PechkinBindings.wkhtmltopdf_set_global_setting(config, "load.cookieJar", _cookieJar);
+                PechkinStatic.SetGlobalSetting(config, "load.cookieJar", _cookieJar);
             }
         }
 

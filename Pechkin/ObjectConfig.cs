@@ -13,6 +13,7 @@ namespace Pechkin
     /// You will find that there's no page body for conversion of pages that are in memory.
     /// Instead the page body is supplied into the <code>Convert</code> method of the converter.
     /// </summary>
+    [Serializable]
     public class ObjectConfig
     {
         public class HeaderSettings
@@ -175,35 +176,35 @@ namespace Pechkin
             {
                 if (_fontSize != null)
                 {
-                    PechkinBindings.wkhtmltopdf_set_object_setting(config, prefix + "." + "fontSize", _fontSize);
+                    PechkinStatic.SetObjectSetting(config, prefix + "." + "fontSize", _fontSize);
                 }
                 if (_fontName != null)
                 {
-                    PechkinBindings.wkhtmltopdf_set_object_setting(config, prefix + "." + "fontName", _fontName);
+                    PechkinStatic.SetObjectSetting(config, prefix + "." + "fontName", _fontName);
                 }
                 if (_leftText != null)
                 {
-                    PechkinBindings.wkhtmltopdf_set_object_setting(config, prefix + "." + "left", _leftText);
+                    PechkinStatic.SetObjectSetting(config, prefix + "." + "left", _leftText);
                 }
                 if (_centerText != null)
                 {
-                    PechkinBindings.wkhtmltopdf_set_object_setting(config, prefix + "." + "center", _centerText);
+                    PechkinStatic.SetObjectSetting(config, prefix + "." + "center", _centerText);
                 }
                 if (_rightText != null)
                 {
-                    PechkinBindings.wkhtmltopdf_set_object_setting(config, prefix + "." + "right", _rightText);
+                    PechkinStatic.SetObjectSetting(config, prefix + "." + "right", _rightText);
                 }
                 if (_lineSeparator != null)
                 {
-                    PechkinBindings.wkhtmltopdf_set_object_setting(config, prefix + "." + "line", _lineSeparator);
+                    PechkinStatic.SetObjectSetting(config, prefix + "." + "line", _lineSeparator);
                 }
                 if (_space != null)
                 {
-                    PechkinBindings.wkhtmltopdf_set_object_setting(config, prefix + "." + "space", _space);
+                    PechkinStatic.SetObjectSetting(config, prefix + "." + "space", _space);
                 }
                 if (_htmlUrl != null)
                 {
-                    PechkinBindings.wkhtmltopdf_set_object_setting(config, prefix + "." + "htmlUrl", _htmlUrl);
+                    PechkinStatic.SetObjectSetting(config, prefix + "." + "htmlUrl", _htmlUrl);
                 }
             }
         }
@@ -684,135 +685,135 @@ namespace Pechkin
 
             if (_tocUseDottedLines != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "toc.useDottedLines", _tocUseDottedLines);
+                PechkinStatic.SetObjectSetting(config, "toc.useDottedLines", _tocUseDottedLines);
             }
             if (_tocCaption != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "toc.captionText", _tocCaption);
+                PechkinStatic.SetObjectSetting(config, "toc.captionText", _tocCaption);
             }
             if (_tocCreateLinks != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "toc.forwardLinks", _tocCreateLinks);
+                PechkinStatic.SetObjectSetting(config, "toc.forwardLinks", _tocCreateLinks);
             }
             if (_tocBackLinks != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "toc.backLinks", _tocBackLinks);
+                PechkinStatic.SetObjectSetting(config, "toc.backLinks", _tocBackLinks);
             }
             if (_tocIndentation != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "toc.indentation", _tocIndentation);
+                PechkinStatic.SetObjectSetting(config, "toc.indentation", _tocIndentation);
             }
             if (_tocFontScale != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "toc.fontScale", _tocFontScale);
+                PechkinStatic.SetObjectSetting(config, "toc.fontScale", _tocFontScale);
             }
             if (_createToc != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "isTableOfContent", _createToc);
+                PechkinStatic.SetObjectSetting(config, "isTableOfContent", _createToc);
             }
             if (_includeInOutline != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "includeInOutline", _includeInOutline);
+                PechkinStatic.SetObjectSetting(config, "includeInOutline", _includeInOutline);
             }
             if (_pagesCount != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "pagesCount", _pagesCount);
+                PechkinStatic.SetObjectSetting(config, "pagesCount", _pagesCount);
             }
             if (_tocXsl != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "tocXsl", _tocXsl);
+                PechkinStatic.SetObjectSetting(config, "tocXsl", _tocXsl);
             }
             if (_pageUri != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "page", _pageUri);
+                PechkinStatic.SetObjectSetting(config, "page", _pageUri);
             }
             if (_useExternalLinks != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "useExternalLinks", _useExternalLinks);
+                PechkinStatic.SetObjectSetting(config, "useExternalLinks", _useExternalLinks);
             }
             if (_useLocalLinks != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "useLocalLinks", _useLocalLinks);
+                PechkinStatic.SetObjectSetting(config, "useLocalLinks", _useLocalLinks);
             }
             if (_produceForms != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "produceForms", _produceForms);
+                PechkinStatic.SetObjectSetting(config, "produceForms", _produceForms);
             }
             if (_loadUsername != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "load.username", _loadUsername);
+                PechkinStatic.SetObjectSetting(config, "load.username", _loadUsername);
             }
             if (_loadPassword != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "load.password", _loadPassword);
+                PechkinStatic.SetObjectSetting(config, "load.password", _loadPassword);
             }
             if (_loadJsDelay != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "load.jsdelay", _loadJsDelay);
+                PechkinStatic.SetObjectSetting(config, "load.jsdelay", _loadJsDelay);
             }
             if (_loadZoomFactor != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "load.zoomFactor", _loadZoomFactor);
+                PechkinStatic.SetObjectSetting(config, "load.zoomFactor", _loadZoomFactor);
             }
             if (_loadRepeatCustomHeaders != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "load.repertCustomHeaders", _loadRepeatCustomHeaders);
+                PechkinStatic.SetObjectSetting(config, "load.repertCustomHeaders", _loadRepeatCustomHeaders);
             }
             if (_loadBlockLocalFileAccess != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "load.blockLocalFileAccess", _loadBlockLocalFileAccess);
+                PechkinStatic.SetObjectSetting(config, "load.blockLocalFileAccess", _loadBlockLocalFileAccess);
             }
             if (_loadStopSlowScript != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "load.stopSlowScript", _loadStopSlowScript);
+                PechkinStatic.SetObjectSetting(config, "load.stopSlowScript", _loadStopSlowScript);
             }
             if (_loadDebugJavascript != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "load.debugJavascript", _loadDebugJavascript);
+                PechkinStatic.SetObjectSetting(config, "load.debugJavascript", _loadDebugJavascript);
             }
             if (_loadErrorHandling != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "load.loadErrorHandling", _loadErrorHandling);
+                PechkinStatic.SetObjectSetting(config, "load.loadErrorHandling", _loadErrorHandling);
             }
             if (_loadProxy != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "load.proxy", _loadProxy);
+                PechkinStatic.SetObjectSetting(config, "load.proxy", _loadProxy);
             }
             if (_webPrintBackground != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "web.background", _webPrintBackground);
+                PechkinStatic.SetObjectSetting(config, "web.background", _webPrintBackground);
             }
             if (_webLoadImages != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "web.loadImages", _webLoadImages);
+                PechkinStatic.SetObjectSetting(config, "web.loadImages", _webLoadImages);
             }
             if (_webRunJavascript != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "web.enableJavascript", _webRunJavascript);
+                PechkinStatic.SetObjectSetting(config, "web.enableJavascript", _webRunJavascript);
             }
             if (_webIntelligentShrinking != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "web.enableIntelligentShrinking", _webIntelligentShrinking);
+                PechkinStatic.SetObjectSetting(config, "web.enableIntelligentShrinking", _webIntelligentShrinking);
             }
             if (_webMinFontSize != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "web.minimumFontSize", _webMinFontSize);
+                PechkinStatic.SetObjectSetting(config, "web.minimumFontSize", _webMinFontSize);
             }
             if (_webPrintMediaType != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "web.printMediaType", _webPrintMediaType);
+                PechkinStatic.SetObjectSetting(config, "web.printMediaType", _webPrintMediaType);
             }
             if (_webDefaultEncoding != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "web.defaultEncoding", _webDefaultEncoding);
+                PechkinStatic.SetObjectSetting(config, "web.defaultEncoding", _webDefaultEncoding);
             }
             if (_webUserStylesheetUri != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "web.userStyleSheet", _webUserStylesheetUri);
+                PechkinStatic.SetObjectSetting(config, "web.userStyleSheet", _webUserStylesheetUri);
             }
             if (_webEnablePlugins != null)
             {
-                PechkinBindings.wkhtmltopdf_set_object_setting(config, "web.enablePlugins", _webEnablePlugins);
+                PechkinStatic.SetObjectSetting(config, "web.enablePlugins", _webEnablePlugins);
             }
 
             _header.SetUpObjectConfig(config, "header");

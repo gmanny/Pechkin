@@ -91,6 +91,7 @@ namespace PechkinTests
             string html = GetResourceString("PechkinTests.Resources.page.html");
 
             TConvType c = ProduceTestObject(new GlobalConfig());
+
             byte[] ret = c.Convert(html);
 
             Assert.NotNull(ret);
