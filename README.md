@@ -3,6 +3,17 @@ Pechkin
 
 .NET Wrapper for [WkHtmlToPdf](http://github.com/antialize/wkhtmltopdf) DLL, library that uses Webkit engine to convert HTML pages to PDF.
 
+Repository archived
+===================
+
+After releasing this library I quickly realized that supporting it for others would be more about understanding the quirks of wkhtmltopdf itself than adding features and fixes on top of it. Wkhtmltopdf is a huge project that's written in a non-managed language, so I've never had the time or motivation to do that, thus this repository stayed unsupported.
+
+At the time of archiving this repo there are many other HTML to PDF libraries that could suite your needs:
+
+* For .NET Core, and later .NET 5 there's a [Wkhtmltopdf.NetCore](https://github.com/fpanaccia/Wkhtmltopdf.NetCore) library.
+* If you're having trouble with Pechkin, you might have better luck with [TuesPechkin](https://github.com/tuespetre/TuesPechkin) which is a rewrite of this library, [DinkToPdf](https://github.com/rdvojmoc/DinkToPdf) or [WkHtmlToXSharp](https://github.com/pruiz/WkHtmlToXSharp).
+* An alternative approach would be to use [PuppeteerSharp](https://www.puppeteersharp.com/examples/index.html#generate-pdf-files) or Selenium to use the Chrome browser itself to produce the PDF output. This approach, along with the list of many other libraries can be found in the [StackOverflow question](https://stackoverflow.com/questions/564650/convert-html-to-pdf-in-net)
+
 FAQ
 ---
 
